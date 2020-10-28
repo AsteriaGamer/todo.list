@@ -1934,6 +1934,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['task'],
   data: function data() {
@@ -37714,22 +37796,47 @@ var render = function() {
                 "div",
                 { staticClass: "modal-header d-flex justify-content-center" },
                 [
-                  _c(
-                    "h5",
-                    {
-                      staticClass: "modal-title",
-                      attrs: { id: "exampleModalLongTitle" }
-                    },
-                    [_vm._v(_vm._s(_vm.task.title))]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "widget-subheading" }, [
-                    _vm._v(
-                      "Добавил: " +
-                        _vm._s(_vm.task.user.name) +
-                        " - " +
-                        _vm._s(_vm.task.created_at)
-                    )
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "widget-content-left ml-2" }, [
+                      _c("div", { staticClass: "widget-heading h5" }, [
+                        _vm._v(_vm._s(_vm.task.title) + " \r\n            "),
+                        _vm.task.confirmed == true &&
+                        _vm.task.finished_at != null
+                          ? _c(
+                              "div",
+                              { staticClass: "badge badge-success ml-2" },
+                              [_vm._v("Выполнено")]
+                            )
+                          : _vm.task.finish_date != null &&
+                            _vm.task.confirmed == false &&
+                            Date.now() >
+                              new Date(_vm.task.finish_date).getTime()
+                          ? _c(
+                              "div",
+                              { staticClass: "badge badge-danger ml-2" },
+                              [_vm._v("Просрочен")]
+                            )
+                          : _vm.task.confirmed == false &&
+                            Date.now() <
+                              new Date(_vm.task.created_at).getTime() +
+                                1000 * 60 * 60
+                          ? _c(
+                              "div",
+                              { staticClass: "badge badge-info ml-2" },
+                              [_vm._v("Новая задача")]
+                            )
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "widget-subheading" }, [
+                        _vm._v(
+                          "Добавил: " +
+                            _vm._s(_vm.task.user.name) +
+                            " - " +
+                            _vm._s(_vm.task.created_at)
+                        )
+                      ])
+                    ])
                   ]),
                   _vm._v(" "),
                   _vm._m(0)
@@ -37737,14 +37844,35 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
-                _c("div", [
-                  _vm._v(
-                    "\r\n            " + _vm._s(_vm.task.title) + "\r\n        "
-                  )
-                ])
+                _c("div", { staticClass: "row justify-content-start py-2" }, [
+                  _c("div", { staticClass: "col-4" }, [
+                    _vm._v("\r\n            Дата исполнения:\r\n          ")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-8" }, [
+                    _vm.task.finish_date != null
+                      ? _c("div", [
+                          _vm._v(
+                            "\r\n              " +
+                              _vm._s(_vm.task.finish_date) +
+                              "\r\n            "
+                          )
+                        ])
+                      : _c("div", [
+                          _c("input", {
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: ".col-xs-3" }
+                          })
+                        ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(1),
+                _vm._v(" "),
+                _vm._m(2)
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _vm._m(3)
             ])
           ]
         )
@@ -37769,6 +37897,119 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-start py-2" }, [
+      _c("div", { staticClass: "col-4" }, [
+        _vm._v("\r\n            Исполнители:\r\n          ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-8" }, [
+        _c("div", { staticClass: "row justify-content-between" }, [
+          _c("div", { staticClass: "col-6" }, [
+            _vm._v("\r\n                Петров Д.А.\r\n              ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-2" }, [
+            _c(
+              "button",
+              { staticClass: "border-0  btn-sm btn-outline-danger" },
+              [_c("i", { staticClass: "fa fa-trash" })]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-between" }, [
+          _c("div", { staticClass: "col-6" }, [
+            _vm._v("\r\n                Смирнов Г.М.\r\n              ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-2" }, [
+            _c(
+              "button",
+              { staticClass: "border-0  btn-sm btn-outline-danger" },
+              [_c("i", { staticClass: "fa fa-trash" })]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-between" }, [
+          _c("div", { staticClass: "col-6" }, [
+            _vm._v("\r\n                Иванов И.И.\r\n              ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-2" }, [
+            _c(
+              "button",
+              { staticClass: "border-0  btn-sm btn-outline-danger" },
+              [_c("i", { staticClass: "fa fa-trash" })]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-between" }, [
+          _c("div", { staticClass: "col-10" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "" }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-2" }, [
+            _c(
+              "button",
+              { staticClass: "border-0 btn-sm btn-outline-success" },
+              [_c("i", { staticClass: "fa fa-plus mu-2" })]
+            )
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-start py-2" }, [
+      _c("div", { staticClass: "col-4" }, [
+        _vm._v("\r\n            Список задач:\r\n          ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-8" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-xs-3" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: ".col-xs-3" }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-3" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: ".col-xs-3" }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-3" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: ".col-xs-3" }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-3" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: ".col-xs-3" }
+            })
+          ])
+        ])
+      ])
+    ])
   },
   function() {
     var _vm = this
