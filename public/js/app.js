@@ -2194,6 +2194,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('/api/task/' + element.id, data)["catch"](function (error) {
         _this4.errors = error.response.data.errors;
+      }).then(function (response) {
+        _this4.GetTask();
       });
     },
     ClearErr: function ClearErr() {

@@ -129,6 +129,8 @@
                 axios.post('/api/task/'+element.id, data)
                     .catch((error) => {
                         this.errors = error.response.data.errors;
+                    }).then((response) => {
+                        this.GetTask()
                     })
                 
             },
