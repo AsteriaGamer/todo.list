@@ -2016,6 +2016,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['task'],
   data: function data() {
@@ -37843,36 +37873,9 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "row justify-content-start py-2" }, [
-                  _c("div", { staticClass: "col-4" }, [
-                    _vm._v("\r\n            Дата исполнения:\r\n          ")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-8" }, [
-                    _vm.task.finish_date != null
-                      ? _c("div", [
-                          _vm._v(
-                            "\r\n              " +
-                              _vm._s(_vm.task.finish_date) +
-                              "\r\n            "
-                          )
-                        ])
-                      : _c("div", [
-                          _c("input", {
-                            staticClass: "form-control",
-                            attrs: { type: "text", placeholder: ".col-xs-3" }
-                          })
-                        ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm._m(1),
-                _vm._v(" "),
-                _vm._m(2)
-              ]),
+              _vm._m(1),
               _vm._v(" "),
-              _vm._m(3)
+              _c("div", { staticClass: "modal-footer" })
             ])
           ]
         )
@@ -37902,134 +37905,353 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-start py-2" }, [
-      _c("div", { staticClass: "col-4" }, [
-        _vm._v("\r\n            Исполнители:\r\n          ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-8" }, [
-        _c("div", { staticClass: "row justify-content-between" }, [
-          _c("div", { staticClass: "col-6" }, [
-            _vm._v("\r\n                Петров Д.А.\r\n              ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-2" }, [
-            _c(
-              "button",
-              { staticClass: "border-0  btn-sm btn-outline-danger" },
-              [_c("i", { staticClass: "fa fa-trash" })]
-            )
-          ])
-        ]),
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("div", { staticClass: "list-group list-group-flush" }, [
+        _c(
+          "div",
+          { staticClass: "list-group-item flex-column align-items-start" },
+          [
+            _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "mb-1 align-self-end",
+                  attrs: { for: "date-input" }
+                },
+                [_vm._v("Дата исполнения")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-control-sm w-50",
+                attrs: {
+                  type: "text",
+                  placeholder: "2020-10-30",
+                  id: "date-input"
+                }
+              })
+            ])
+          ]
+        ),
         _vm._v(" "),
-        _c("div", { staticClass: "row justify-content-between" }, [
-          _c("div", { staticClass: "col-6" }, [
-            _vm._v("\r\n                Смирнов Г.М.\r\n              ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-2" }, [
-            _c(
-              "button",
-              { staticClass: "border-0  btn-sm btn-outline-danger" },
-              [_c("i", { staticClass: "fa fa-trash" })]
-            )
-          ])
-        ]),
+        _c(
+          "div",
+          { staticClass: "list-group-item flex-column align-items-start" },
+          [
+            _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
+              _c("label", { staticClass: "mb-1 align-self-start" }, [
+                _vm._v("Исполнители")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-50" }, [
+                _c("div", { staticClass: "flex-row align-items-start" }, [
+                  _c(
+                    "div",
+                    { staticClass: "input-group input-group-sm mb-3" },
+                    [
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Введите имя пользователя",
+                          "aria-label": "Recipient's username",
+                          "aria-describedby": "basic-addon2"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-group-append" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-success",
+                            attrs: { type: "button" }
+                          },
+                          [_c("i", { staticClass: "fa fa-plus" })]
+                        )
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "flex-row d-flex justify-content-between py-1"
+                    },
+                    [
+                      _c("label", { staticClass: "mb-1 align-self-center" }, [
+                        _vm._v("Иванов И.И.")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-sm btn-outline-danger btn-transition border-0"
+                        },
+                        [_c("i", { staticClass: "fa fa-trash" })]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "#collapseExample",
+                        "data-toggle": "collapse"
+                      }
+                    },
+                    [_vm._v("Подробнее")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "collapse",
+                      attrs: { id: "collapseExample" }
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "flex-row d-flex justify-content-between py-1"
+                        },
+                        [
+                          _c(
+                            "label",
+                            { staticClass: "mb-1 align-self-center" },
+                            [_vm._v("Петров Д.А.")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-sm btn-outline-danger btn-transition border-0"
+                            },
+                            [_c("i", { staticClass: "fa fa-trash" })]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "flex-row d-flex justify-content-between py-1"
+                        },
+                        [
+                          _c(
+                            "label",
+                            { staticClass: "mb-1 align-self-center" },
+                            [_vm._v("Смирнов А.Г.")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-sm btn-outline-danger btn-transition border-0"
+                            },
+                            [_c("i", { staticClass: "fa fa-trash" })]
+                          )
+                        ]
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ])
+          ]
+        ),
         _vm._v(" "),
-        _c("div", { staticClass: "row justify-content-between" }, [
-          _c("div", { staticClass: "col-6" }, [
-            _vm._v("\r\n                Иванов И.И.\r\n              ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-2" }, [
-            _c(
-              "button",
-              { staticClass: "border-0  btn-sm btn-outline-danger" },
-              [_c("i", { staticClass: "fa fa-trash" })]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row justify-content-between" }, [
-          _c("div", { staticClass: "col-10" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: "" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-2" }, [
-            _c(
-              "button",
-              { staticClass: "border-0 btn-sm btn-outline-success" },
-              [_c("i", { staticClass: "fa fa-plus mu-2" })]
-            )
-          ])
-        ])
+        _c(
+          "div",
+          { staticClass: "list-group-item flex-column align-items-start" },
+          [
+            _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
+              _c("label", { staticClass: "mb-1" }, [
+                _vm._v("Список дополнительных заданий")
+              ]),
+              _vm._v(" "),
+              _c("small", { staticClass: "text-muted" }, [
+                _vm._v("выполнено 0/3")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-row align-items-start" }, [
+              _c(
+                "div",
+                { staticClass: "d-flex flex-row justify-content-between py-1" },
+                [
+                  _c("div", { staticClass: "custom-checkbox custom-control" }, [
+                    _c("input", {
+                      staticClass: "custom-control-input",
+                      attrs: { type: "checkbox", id: "test1" }
+                    }),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "custom-control-label",
+                        attrs: { for: "test1" }
+                      },
+                      [_vm._v(" ")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "w-50" }, [
+                    _vm._v("Проснуться и заправить кровать")
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("06:00")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("06:05")]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
+                    },
+                    [_c("i", { staticClass: "fa fa-trash" })]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "d-flex flex-row justify-content-between py-1" },
+                [
+                  _c("div", { staticClass: "custom-checkbox custom-control" }, [
+                    _c("input", {
+                      staticClass: "custom-control-input",
+                      attrs: { type: "checkbox", id: "test2" }
+                    }),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "custom-control-label",
+                        attrs: { for: "test2" }
+                      },
+                      [_vm._v(" ")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "w-50" }, [
+                    _vm._v("Умыться и почистить зубы")
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("06:05")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("06:10")]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
+                    },
+                    [_c("i", { staticClass: "fa fa-trash" })]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "d-flex flex-row justify-content-between py-1" },
+                [
+                  _c("div", { staticClass: "custom-checkbox custom-control" }, [
+                    _c("input", {
+                      staticClass: "custom-control-input",
+                      attrs: { type: "checkbox", id: "test2" }
+                    }),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "custom-control-label",
+                        attrs: { for: "test2" }
+                      },
+                      [_vm._v(" ")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "w-50" }, [
+                    _vm._v("Утреняя зарядка")
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("06:10")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("06:25")]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
+                    },
+                    [_c("i", { staticClass: "fa fa-trash" })]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "d-flex flex-row justify-content-between py-1" },
+                [
+                  _c("div", { staticClass: "custom-checkbox custom-control" }, [
+                    _c("input", {
+                      staticClass: "custom-control-input",
+                      attrs: { type: "checkbox", id: "test4" }
+                    }),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "custom-control-label",
+                        attrs: { for: "test4" }
+                      },
+                      [_vm._v(" ")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "w-50" }, [
+                    _vm._v("Добраться до работы")
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("06:25")]),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("07:45")]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
+                    },
+                    [_c("i", { staticClass: "fa fa-trash" })]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "d-flex flex-row justify-content-center py-1" },
+                [
+                  _c(
+                    "button",
+                    { staticClass: "btn btn-sm btn-outline-success" },
+                    [
+                      _vm._v(
+                        " \r\n                    Добавить\r\n                  "
+                      )
+                    ]
+                  )
+                ]
+              )
+            ])
+          ]
+        )
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-start py-2" }, [
-      _c("div", { staticClass: "col-4" }, [
-        _vm._v("\r\n            Список задач:\r\n          ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-8" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-xs-3" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: ".col-xs-3" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-3" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: ".col-xs-3" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-3" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: ".col-xs-3" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-3" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: ".col-xs-3" }
-            })
-          ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Save changes")]
-      )
     ])
   }
 ]
@@ -38292,7 +38514,10 @@ var render = function() {
                                   _vm._v(" "),
                                   _c(
                                     "div",
-                                    { staticClass: "widget-content-right" },
+                                    {
+                                      staticClass:
+                                        "widget-content-right btn-actions-pane-right"
+                                    },
                                     [
                                       _c(
                                         "button",
