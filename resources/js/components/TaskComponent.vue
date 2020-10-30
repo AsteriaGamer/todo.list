@@ -45,7 +45,7 @@
                                                     </div>
                                                     <div class="widget-subheading">Добавил: {{ task.user.name }} - {{ task.created_at}}</div>
                                                 </div>
-                                                <div class="widget-content-right"> 
+                                                <div class="widget-content-right btn-actions-pane-right"> 
                                                     <button class="border-0 btn-transition btn btn-outline-success" data-toggle="modal" data-target="#taskUpdateModal" v-on:click="setTaskData(task)"> 
                                                         <i class="fa fa-edit"></i>
                                                     </button> 
