@@ -19,3 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('task', 'TaskController');
+Route::resource('task-member', 'TaskMemberController')->except([
+    'index'
+]);
+Route::resource('sub-task', 'SubTaskController')->except([
+    'index'
+]);
+
+Route::get('/sub-task-get/{id}', 'SubTaskController@index');
+Route::get('/task-member-get/{id}', 'TaskMemberController@index');
