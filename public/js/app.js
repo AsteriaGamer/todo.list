@@ -2046,10 +2046,233 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['task'],
+  props: ["task"],
   data: function data() {
-    return {};
+    return {
+      task_member: "",
+      member_list: "",
+      sub_task_list: "",
+      sub_task_title: "",
+      sub_task_start_time: "",
+      sub_task_end_time: "",
+      main_task_id: this.task,
+      edit_sub_task_title: null,
+      edit_sub_task_start_time: null,
+      edit_sub_task_end_time: null,
+      edit_element: null,
+      errors: ""
+    };
+  },
+  watch: {
+    task: function task() {
+      this.GetSubTask(this.task.id);
+      this.GetMembers(this.task.id);
+    }
+  },
+  methods: {
+    AddMember: function AddMember(element) {
+      var _this = this;
+
+      var data = new FormData();
+      data.append("task_id", element);
+      data.append("user_name", this.task_member);
+      axios.post("/api/task-member", data).then(function (response) {
+        _this.task_member = null;
+
+        _this.GetMembers(_this.task.id);
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+      });
+    },
+    GetMembers: function GetMembers(element) {
+      var _this2 = this;
+
+      axios.get("/api/task-member-get/" + element).then(function (responce) {
+        _this2.member_list = responce.data;
+      })["catch"](function (error) {
+        _this2.errors = error.response.data.errors;
+      });
+    },
+    DeleteMember: function DeleteMember(element) {
+      var _this3 = this;
+
+      var data = new FormData();
+      data.append("_method", "DELETE");
+      axios.post("/api/task-member/" + element.id, data).then(function (response) {
+        _this3.GetMembers(_this3.task.id);
+      })["catch"](function (error) {
+        _this3.errors = error.response.data.errors;
+      });
+    },
+    CreateSubTask: function CreateSubTask(element) {
+      var _this4 = this;
+
+      var data = new FormData();
+      data.append('task_id', element);
+      data.append("title", this.sub_task_title);
+      data.append("start_time", this.sub_task_start_time);
+      data.append("end_time", this.sub_task_end_time);
+      data.append("confirmed", 0);
+      axios.post("/api/sub-task", data).then(function (response) {
+        _this4.sub_task_title = null;
+        _this4.sub_task_start_time = null;
+        _this4.sub_task_end_time = null;
+
+        _this4.GetSubTask(_this4.task.id);
+      })["catch"](function (error) {
+        _this4.errors = error.response.data.errors;
+      });
+    },
+    GetSubTask: function GetSubTask(element) {
+      var _this5 = this;
+
+      axios.get("/api/sub-task-get/" + element).then(function (responce) {
+        _this5.sub_task_list = responce.data;
+      })["catch"](function (error) {
+        _this5.errors = error.response.data.errors;
+      });
+    },
+    DeleteSubTask: function DeleteSubTask(element) {
+      var _this6 = this;
+
+      var data = new FormData();
+      data.append("_method", "DELETE");
+      axios.post("/api/sub-task/" + element.id, data).then(function (response) {
+        _this6.GetSubTask(_this6.task.id);
+      })["catch"](function (error) {
+        _this6.errors = error.response.data.errors;
+      });
+    },
+    CheckSubTask: function CheckSubTask(element) {
+      var _this7 = this;
+
+      element.confirmed = !element.confirmed;
+      var data = new FormData();
+      data.append("_method", "PATCH");
+
+      if (element.confirmed == true) {
+        data.append("confirmed", 1);
+      }
+
+      if (element.confirmed == false) {
+        data.append("confirmed", 0);
+      }
+
+      axios.post("/api/sub-task/" + element.id, data)["catch"](function (error) {
+        _this7.errors = error.response.data.errors;
+      }).then(function (response) {
+        _this7.GetSubTask(_this7.task.id);
+      });
+    },
+    ClearErr: function ClearErr() {
+      this.errors = "";
+    },
+    UpdateSubTask: function UpdateSubTask(element) {
+      var _this8 = this;
+
+      this.edit_element = null;
+      var data = new FormData();
+      data.append("_method", "PATCH");
+      data.append("title", this.edit_sub_task_title);
+      data.append("start_time", this.edit_sub_task_start_time);
+      data.append("end_time", this.edit_sub_task_end_time);
+      axios.post("/api/sub-task/" + element.id, data)["catch"](function (error) {
+        _this8.errors = error.response.data.errors;
+      }).then(function (response) {
+        _this8.edit_sub_task_title = "";
+        _this8.edit_sub_task_start_time = "";
+        _this8.edit_sub_task_end_time = "";
+
+        _this8.GetSubTask(_this8.task.id);
+      });
+    },
+    UpdateFinishDate: function UpdateFinishDate(element) {
+      var _this9 = this;
+
+      var data = new FormData();
+      data.append("_method", "PATCH");
+      data.append("finish_date", element.finish_date);
+      axios.post("/api/task/" + element.id, data)["catch"](function (error) {
+        _this9.errors = error.response.data.errors;
+      }).then(function (response) {
+        console.log("ok");
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.GetSubTask(this.task.id);
+    this.GetMembers(this.task.id);
   }
 });
 
@@ -2133,13 +2356,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       task_list: '',
       task_title: '',
+      edit_task_title: '',
       errors: null,
-      task_data: ''
+      task_data: '',
+      edit_element: null,
+      show_modal: false
     };
   },
   methods: {
@@ -2203,6 +2440,21 @@ __webpack_require__.r(__webpack_exports__);
     },
     setTaskData: function setTaskData(task) {
       this.task_data = task;
+    },
+    UpdateTaskName: function UpdateTaskName(element) {
+      var _this5 = this;
+
+      this.edit_element = null;
+      var data = new FormData();
+      data.append('_method', 'PATCH');
+      data.append('title', this.edit_task_title);
+      axios.post('/api/task/' + element.id, data)["catch"](function (error) {
+        _this5.errors = error.response.data.errors;
+      }).then(function (response) {
+        _this5.edit_task_title = '';
+
+        _this5.GetTask();
+      });
     }
   },
   mounted: function mounted() {
@@ -37806,6 +38058,7 @@ var render = function() {
     _c(
       "div",
       {
+        ref: "vuemodal",
         staticClass: "modal fade",
         attrs: {
           id: "taskUpdateModal",
@@ -37831,13 +38084,21 @@ var render = function() {
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "widget-content-left ml-2" }, [
                       _c("div", { staticClass: "widget-heading h5" }, [
-                        _vm._v(_vm._s(_vm.task.title) + " \r\n            "),
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.task.title) +
+                            "\n                "
+                        ),
                         _vm.task.confirmed == true &&
                         _vm.task.finished_at != null
                           ? _c(
                               "div",
                               { staticClass: "badge badge-success ml-2" },
-                              [_vm._v("Выполнено")]
+                              [
+                                _vm._v(
+                                  "\n                  Выполнено\n                "
+                                )
+                              ]
                             )
                           : _vm.task.finish_date != null &&
                             _vm.task.confirmed == false &&
@@ -37846,7 +38107,11 @@ var render = function() {
                           ? _c(
                               "div",
                               { staticClass: "badge badge-danger ml-2" },
-                              [_vm._v("Просрочен")]
+                              [
+                                _vm._v(
+                                  "\n                  Просрочен\n                "
+                                )
+                              ]
                             )
                           : _vm.task.confirmed == false &&
                             Date.now() <
@@ -37855,17 +38120,20 @@ var render = function() {
                           ? _c(
                               "div",
                               { staticClass: "badge badge-info ml-2" },
-                              [_vm._v("Новая задача")]
+                              [
+                                _vm._v(
+                                  "\n                  Новая задача\n                "
+                                )
+                              ]
                             )
                           : _vm._e()
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "widget-subheading" }, [
                         _vm._v(
-                          "Добавил: " +
-                            _vm._s(_vm.task.user.name) +
-                            " - " +
-                            _vm._s(_vm.task.created_at)
+                          "\n                Добавил: - " +
+                            _vm._s(_vm.task.created_at) +
+                            "\n              "
                         )
                       ])
                     ])
@@ -37875,10 +38143,605 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" })
-            ])
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "list-group list-group-flush" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "list-group-item flex-column align-items-start"
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "d-flex w-100 justify-content-between" },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "mb-1 align-self-end",
+                              attrs: { for: "date-input" }
+                            },
+                            [_vm._v("Дата исполнения")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "form-control form-control-sm w-50",
+                            attrs: { type: "date", id: "date-input" },
+                            domProps: { value: _vm.task.finish_date },
+                            on: {
+                              input: function($event) {
+                                _vm.task.finish_date = $event.target.value
+                                _vm.UpdateFinishDate(_vm.task)
+                              }
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "list-group-item flex-column align-items-start"
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "d-flex w-100 justify-content-between" },
+                        [
+                          _c(
+                            "label",
+                            { staticClass: "mb-1 align-self-start" },
+                            [_vm._v("Исполнители")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-50" }, [
+                            _c(
+                              "div",
+                              { staticClass: "flex-row align-items-start" },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "input-group input-group-sm mb-3"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.task_member,
+                                          expression: "task_member"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "text",
+                                        placeholder: "Введите имя пользователя",
+                                        "aria-label": "Recipient's username",
+                                        "aria-describedby": "basic-addon2"
+                                      },
+                                      domProps: { value: _vm.task_member },
+                                      on: {
+                                        keydown: function($event) {
+                                          return _vm.ClearErr()
+                                        },
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.task_member = $event.target.value
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "input-group-append" },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-outline-success",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.AddMember(
+                                                  _vm.task.id
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-plus"
+                                            })
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _vm.errors.user_name
+                                  ? _c(
+                                      "div",
+                                      {
+                                        staticClass: "alert alert-danger",
+                                        attrs: { role: "alert" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                            " +
+                                            _vm._s(_vm.errors["user_name"][0]) +
+                                            "\n                    "
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm._l(_vm.member_list, function(member) {
+                                  return _c("div", { key: member.id }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "flex-row d-flex justify-content-between py-1"
+                                      },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "mb-1 align-self-center"
+                                          },
+                                          [_vm._v(_vm._s(member.user.name))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-sm btn-outline-danger btn-transition border-0",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.DeleteMember(member)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-trash"
+                                            })
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ])
+                                })
+                              ],
+                              2
+                            )
+                          ])
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "list-group-item flex-column align-items-start"
+                    },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "flex-row w-100 align-items-start" },
+                        _vm._l(_vm.sub_task_list, function(sub_task) {
+                          return _c("div", { key: sub_task.id }, [
+                            _vm.edit_element == null ||
+                            _vm.edit_element != sub_task.id
+                              ? _c("div", [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "d-flex flex-row justify-content-between py-1"
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "custom-checkbox custom-control"
+                                        },
+                                        [
+                                          sub_task.confirmed == true
+                                            ? _c("div", [
+                                                _c("input", {
+                                                  staticClass:
+                                                    "custom-control-input",
+                                                  attrs: {
+                                                    checked: "checked",
+                                                    id: "sub" + sub_task.id,
+                                                    type: "checkbox"
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.CheckSubTask(
+                                                        sub_task
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "sub" + sub_task.id
+                                                    }
+                                                  },
+                                                  [_vm._v(" ")]
+                                                )
+                                              ])
+                                            : _c("div", [
+                                                _c("input", {
+                                                  staticClass:
+                                                    "custom-control-input",
+                                                  attrs: {
+                                                    id: "sub" + sub_task.id,
+                                                    type: "checkbox"
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.CheckSubTask(
+                                                        sub_task
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _c(
+                                                  "label",
+                                                  {
+                                                    staticClass:
+                                                      "custom-control-label",
+                                                    attrs: {
+                                                      for: "sub" + sub_task.id
+                                                    }
+                                                  },
+                                                  [_vm._v(" ")]
+                                                )
+                                              ])
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("label", { staticClass: "w-50" }, [
+                                        _vm._v(_vm._s(sub_task.title))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(_vm._s(sub_task.start_time))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(_vm._s(sub_task.end_time))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-sm btn-outline-success btn-transition border-0 align-self-start",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.edit_element = sub_task.id
+                                              _vm.edit_sub_task_title =
+                                                sub_task.title
+                                              _vm.edit_sub_task_start_time =
+                                                sub_task.start_time
+                                              _vm.edit_sub_task_end_time =
+                                                sub_task.end_time
+                                            }
+                                          }
+                                        },
+                                        [_c("i", { staticClass: "fa fa-edit" })]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.DeleteSubTask(sub_task)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fa fa-trash"
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ])
+                              : _vm.edit_element == sub_task.id
+                              ? _c("div", [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "d-flex flex-row justify-content-between py-1"
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.edit_sub_task_title,
+                                            expression: "edit_sub_task_title"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "form-control form-control-sm w-50",
+                                        attrs: { type: "text" },
+                                        domProps: {
+                                          value: _vm.edit_sub_task_title
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.edit_sub_task_title =
+                                              $event.target.value
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.edit_sub_task_start_time,
+                                            expression:
+                                              "edit_sub_task_start_time"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "form-control form-control-sm w-25",
+                                        attrs: { type: "text" },
+                                        domProps: {
+                                          value: _vm.edit_sub_task_start_time
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.edit_sub_task_start_time =
+                                              $event.target.value
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.edit_sub_task_end_time,
+                                            expression: "edit_sub_task_end_time"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "form-control form-control-sm w-25",
+                                        attrs: { type: "text" },
+                                        domProps: {
+                                          value: _vm.edit_sub_task_end_time
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.edit_sub_task_end_time =
+                                              $event.target.value
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-sm btn-warning align-self-center",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.UpdateSubTask(sub_task)
+                                            }
+                                          }
+                                        },
+                                        [_c("i", { staticClass: "fa fa-edit" })]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-sm btn-outline-danger btn-transition border-0 align-self-center",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.DeleteSubTask(sub_task)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fa fa-trash"
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ])
+                              : _vm._e()
+                          ])
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "d-flex flex-row justify-content-between py-1"
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.sub_task_title,
+                                expression: "sub_task_title"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-sm w-50 mb-1",
+                            attrs: { placeholder: "Имя задания" },
+                            domProps: { value: _vm.sub_task_title },
+                            on: {
+                              keydown: function($event) {
+                                return _vm.ClearErr()
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.sub_task_title = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.sub_task_start_time,
+                                expression: "sub_task_start_time"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-sm w-25 mb-1",
+                            attrs: { placeholder: "Начало" },
+                            domProps: { value: _vm.sub_task_start_time },
+                            on: {
+                              keydown: function($event) {
+                                return _vm.ClearErr()
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.sub_task_start_time = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.sub_task_end_time,
+                                expression: "sub_task_end_time"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-sm w-25 mb-1",
+                            attrs: { placeholder: "Конец" },
+                            domProps: { value: _vm.sub_task_end_time },
+                            on: {
+                              keydown: function($event) {
+                                return _vm.ClearErr()
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.sub_task_end_time = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-sm btn-outline-success btn-transition border-0 align-self-start",
+                              on: {
+                                click: function($event) {
+                                  return _vm.CreateSubTask(_vm.task.id)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-check" })]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.errors.end_time ||
+                      _vm.errors.start_time ||
+                      _vm.errors.title
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-danger",
+                              attrs: { role: "alert" }
+                            },
+                            _vm._l(_vm.errors, function(v, k) {
+                              return _c(
+                                "div",
+                                { key: k },
+                                _vm._l(v, function(error) {
+                                  return _c("div", { key: error }, [
+                                    _vm._v(
+                                      "\n                        " +
+                                        _vm._s(error) +
+                                        "\n                      "
+                                    )
+                                  ])
+                                }),
+                                0
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e()
+                    ]
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" })
           ]
         )
       ]
@@ -37907,352 +38770,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-body" }, [
-      _c("div", { staticClass: "list-group list-group-flush" }, [
-        _c(
-          "div",
-          { staticClass: "list-group-item flex-column align-items-start" },
-          [
-            _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "mb-1 align-self-end",
-                  attrs: { for: "date-input" }
-                },
-                [_vm._v("Дата исполнения")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-control-sm w-50",
-                attrs: {
-                  type: "text",
-                  placeholder: "2020-10-30",
-                  id: "date-input"
-                }
-              })
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "list-group-item flex-column align-items-start" },
-          [
-            _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
-              _c("label", { staticClass: "mb-1 align-self-start" }, [
-                _vm._v("Исполнители")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "w-50" }, [
-                _c("div", { staticClass: "flex-row align-items-start" }, [
-                  _c(
-                    "div",
-                    { staticClass: "input-group input-group-sm mb-3" },
-                    [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "Введите имя пользователя",
-                          "aria-label": "Recipient's username",
-                          "aria-describedby": "basic-addon2"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "input-group-append" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-success",
-                            attrs: { type: "button" }
-                          },
-                          [_c("i", { staticClass: "fa fa-plus" })]
-                        )
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "flex-row d-flex justify-content-between py-1"
-                    },
-                    [
-                      _c("label", { staticClass: "mb-1 align-self-center" }, [
-                        _vm._v("Иванов И.И.")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "btn btn-sm btn-outline-danger btn-transition border-0"
-                        },
-                        [_c("i", { staticClass: "fa fa-trash" })]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      attrs: {
-                        href: "#collapseExample",
-                        "data-toggle": "collapse"
-                      }
-                    },
-                    [_vm._v("Подробнее")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "collapse",
-                      attrs: { id: "collapseExample" }
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "flex-row d-flex justify-content-between py-1"
-                        },
-                        [
-                          _c(
-                            "label",
-                            { staticClass: "mb-1 align-self-center" },
-                            [_vm._v("Петров Д.А.")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn btn-sm btn-outline-danger btn-transition border-0"
-                            },
-                            [_c("i", { staticClass: "fa fa-trash" })]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "flex-row d-flex justify-content-between py-1"
-                        },
-                        [
-                          _c(
-                            "label",
-                            { staticClass: "mb-1 align-self-center" },
-                            [_vm._v("Смирнов А.Г.")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn btn-sm btn-outline-danger btn-transition border-0"
-                            },
-                            [_c("i", { staticClass: "fa fa-trash" })]
-                          )
-                        ]
-                      )
-                    ]
-                  )
-                ])
-              ])
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "list-group-item flex-column align-items-start" },
-          [
-            _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
-              _c("label", { staticClass: "mb-1" }, [
-                _vm._v("Список дополнительных заданий")
-              ]),
-              _vm._v(" "),
-              _c("small", { staticClass: "text-muted" }, [
-                _vm._v("выполнено 0/3")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex-row align-items-start" }, [
-              _c(
-                "div",
-                { staticClass: "d-flex flex-row justify-content-between py-1" },
-                [
-                  _c("div", { staticClass: "custom-checkbox custom-control" }, [
-                    _c("input", {
-                      staticClass: "custom-control-input",
-                      attrs: { type: "checkbox", id: "test1" }
-                    }),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "custom-control-label",
-                        attrs: { for: "test1" }
-                      },
-                      [_vm._v(" ")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("label", { staticClass: "w-50" }, [
-                    _vm._v("Проснуться и заправить кровать")
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("06:00")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("06:05")]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
-                    },
-                    [_c("i", { staticClass: "fa fa-trash" })]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "d-flex flex-row justify-content-between py-1" },
-                [
-                  _c("div", { staticClass: "custom-checkbox custom-control" }, [
-                    _c("input", {
-                      staticClass: "custom-control-input",
-                      attrs: { type: "checkbox", id: "test2" }
-                    }),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "custom-control-label",
-                        attrs: { for: "test2" }
-                      },
-                      [_vm._v(" ")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("label", { staticClass: "w-50" }, [
-                    _vm._v("Умыться и почистить зубы")
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("06:05")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("06:10")]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
-                    },
-                    [_c("i", { staticClass: "fa fa-trash" })]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "d-flex flex-row justify-content-between py-1" },
-                [
-                  _c("div", { staticClass: "custom-checkbox custom-control" }, [
-                    _c("input", {
-                      staticClass: "custom-control-input",
-                      attrs: { type: "checkbox", id: "test2" }
-                    }),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "custom-control-label",
-                        attrs: { for: "test2" }
-                      },
-                      [_vm._v(" ")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("label", { staticClass: "w-50" }, [
-                    _vm._v("Утреняя зарядка")
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("06:10")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("06:25")]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
-                    },
-                    [_c("i", { staticClass: "fa fa-trash" })]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "d-flex flex-row justify-content-between py-1" },
-                [
-                  _c("div", { staticClass: "custom-checkbox custom-control" }, [
-                    _c("input", {
-                      staticClass: "custom-control-input",
-                      attrs: { type: "checkbox", id: "test4" }
-                    }),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "custom-control-label",
-                        attrs: { for: "test4" }
-                      },
-                      [_vm._v(" ")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("label", { staticClass: "w-50" }, [
-                    _vm._v("Добраться до работы")
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("06:25")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("07:45")]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
-                    },
-                    [_c("i", { staticClass: "fa fa-trash" })]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "d-flex flex-row justify-content-center py-1" },
-                [
-                  _c(
-                    "button",
-                    { staticClass: "btn btn-sm btn-outline-success" },
-                    [
-                      _vm._v(
-                        " \r\n                    Добавить\r\n                  "
-                      )
-                    ]
-                  )
-                ]
-              )
-            ])
-          ]
-        )
+    return _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
+      _c("label", { staticClass: "mb-1" }, [
+        _vm._v("Список дополнительных заданий")
       ])
     ])
   }
@@ -38347,239 +38867,326 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "card-hover-shadow-2x mb-3 card" },
-      [
-        _vm._m(1),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "scroll-area-sm" },
-          [
-            _c("perfect-scrollbar", { staticClass: "ps-show-limits" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "ps ps--active-y",
-                  staticStyle: { position: "static" }
-                },
-                [
-                  _c("div", { staticClass: "ps-content" }, [
-                    _c(
-                      "ul",
-                      { staticClass: " list-group list-group-flush" },
-                      _vm._l(_vm.task_list, function(task) {
-                        return _c(
-                          "li",
-                          { key: task.id, staticClass: "list-group-item" },
-                          [
-                            _c("div", { staticClass: "widget-content p-0" }, [
-                              _c(
-                                "div",
-                                { staticClass: "widget-content-wrapper" },
-                                [
-                                  _c(
-                                    "div",
-                                    { staticClass: "widget-content-left mr-2" },
-                                    [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "custom-checkbox custom-control"
-                                        },
-                                        [
-                                          task.confirmed == true
-                                            ? _c("div", [
-                                                _c("input", {
+    _c("div", { staticClass: "card-hover-shadow-2x mb-3 card" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "scroll-area-sm" },
+        [
+          _c("perfect-scrollbar", { staticClass: "ps-show-limits" }, [
+            _c(
+              "div",
+              {
+                staticClass: "ps ps--active-y",
+                staticStyle: { position: "static" }
+              },
+              [
+                _c("div", { staticClass: "ps-content" }, [
+                  _c(
+                    "ul",
+                    { staticClass: " list-group list-group-flush" },
+                    _vm._l(_vm.task_list, function(task) {
+                      return _c(
+                        "li",
+                        { key: task.id, staticClass: "list-group-item" },
+                        [
+                          _c("div", { staticClass: "widget-content p-0" }, [
+                            _c(
+                              "div",
+                              { staticClass: "widget-content-wrapper" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "widget-content-left mr-2" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "custom-checkbox custom-control"
+                                      },
+                                      [
+                                        task.confirmed == true
+                                          ? _c("div", [
+                                              _c("input", {
+                                                staticClass:
+                                                  "custom-control-input",
+                                                attrs: {
+                                                  checked: "checked",
+                                                  id: task.id,
+                                                  type: "checkbox"
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.CheckTask(task)
+                                                  }
+                                                }
+                                              }),
+                                              _c(
+                                                "label",
+                                                {
                                                   staticClass:
-                                                    "custom-control-input",
+                                                    "custom-control-label",
+                                                  attrs: { for: task.id }
+                                                },
+                                                [_vm._v(" ")]
+                                              )
+                                            ])
+                                          : _c("div", [
+                                              _c("input", {
+                                                staticClass:
+                                                  "custom-control-input",
+                                                attrs: {
+                                                  id: task.id,
+                                                  type: "checkbox"
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.CheckTask(task)
+                                                  }
+                                                }
+                                              }),
+                                              _c(
+                                                "label",
+                                                {
+                                                  staticClass:
+                                                    "custom-control-label",
+                                                  attrs: { for: task.id }
+                                                },
+                                                [_vm._v(" ")]
+                                              )
+                                            ])
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "widget-content-left" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "widget-heading" },
+                                      [
+                                        _vm.edit_element == null ||
+                                        _vm.edit_element != task.id
+                                          ? _c("div", [
+                                              _c(
+                                                "div",
+                                                {
                                                   attrs: {
-                                                    checked: "checked",
-                                                    id: task.id,
-                                                    type: "checkbox"
+                                                    "data-toggle": "modal",
+                                                    "data-target":
+                                                      "#taskUpdateModal"
                                                   },
                                                   on: {
                                                     click: function($event) {
-                                                      return _vm.CheckTask(task)
+                                                      _vm.setTaskData(task)
+                                                      _vm.show_modal = true
                                                     }
                                                   }
-                                                }),
-                                                _c(
-                                                  "label",
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                                                " +
+                                                      _vm._s(task.title) +
+                                                      "\n                                                                "
+                                                  ),
+                                                  task.confirmed == true &&
+                                                  task.finished_at != null
+                                                    ? _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "badge badge-success ml-2"
+                                                        },
+                                                        [_vm._v("Выполнено")]
+                                                      )
+                                                    : task.finish_date !=
+                                                        null &&
+                                                      task.confirmed == false &&
+                                                      Date.now() >
+                                                        new Date(
+                                                          task.finish_date
+                                                        ).getTime()
+                                                    ? _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "badge badge-danger ml-2"
+                                                        },
+                                                        [_vm._v("Просрочен")]
+                                                      )
+                                                    : task.confirmed == false &&
+                                                      Date.now() <
+                                                        new Date(
+                                                          task.created_at
+                                                        ).getTime() +
+                                                          1000 * 60 * 60
+                                                    ? _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "badge badge-info ml-2"
+                                                        },
+                                                        [_vm._v("Новая задача")]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              )
+                                            ])
+                                          : _vm.edit_element == task.id
+                                          ? _c("div", [
+                                              _c("input", {
+                                                directives: [
                                                   {
-                                                    staticClass:
-                                                      "custom-control-label",
-                                                    attrs: { for: task.id }
-                                                  },
-                                                  [_vm._v(" ")]
-                                                )
-                                              ])
-                                            : _c("div", [
-                                                _c("input", {
-                                                  staticClass:
-                                                    "custom-control-input",
-                                                  attrs: {
-                                                    id: task.id,
-                                                    type: "checkbox"
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      return _vm.CheckTask(task)
-                                                    }
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: _vm.edit_task_title,
+                                                    expression:
+                                                      "edit_task_title"
                                                   }
-                                                }),
-                                                _c(
-                                                  "label",
-                                                  {
-                                                    staticClass:
-                                                      "custom-control-label",
-                                                    attrs: { for: task.id }
-                                                  },
-                                                  [_vm._v(" ")]
-                                                )
-                                              ])
-                                        ]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "widget-content-left" },
-                                    [
-                                      _c(
-                                        "div",
-                                        { staticClass: "widget-heading" },
-                                        [
-                                          _vm._v(
-                                            _vm._s(task.title) +
-                                              " \n                                                        "
-                                          ),
-                                          task.confirmed == true &&
-                                          task.finished_at != null
-                                            ? _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-success ml-2"
+                                                ],
+                                                staticClass: "form-control",
+                                                attrs: { type: "text" },
+                                                domProps: {
+                                                  value: _vm.edit_task_title
                                                 },
-                                                [_vm._v("Выполнено")]
-                                              )
-                                            : task.finish_date != null &&
-                                              task.confirmed == false &&
-                                              Date.now() >
-                                                new Date(
-                                                  task.finish_date
-                                                ).getTime()
-                                            ? _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-danger ml-2"
-                                                },
-                                                [_vm._v("Просрочен")]
-                                              )
-                                            : task.confirmed == false &&
-                                              Date.now() <
-                                                new Date(
-                                                  task.created_at
-                                                ).getTime() +
-                                                  1000 * 60 * 60
-                                            ? _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-info ml-2"
-                                                },
-                                                [_vm._v("Новая задача")]
-                                              )
-                                            : _vm._e()
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "widget-subheading" },
-                                        [
-                                          _vm._v(
-                                            "Добавил: " +
-                                              _vm._s(task.user.name) +
-                                              " - " +
-                                              _vm._s(task.created_at)
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "widget-content-right btn-actions-pane-right"
-                                    },
-                                    [
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "border-0 btn-transition btn btn-outline-success",
-                                          attrs: {
-                                            "data-toggle": "modal",
-                                            "data-target": "#taskUpdateModal"
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.setTaskData(task)
-                                            }
+                                                on: {
+                                                  keyup: [
+                                                    function($event) {
+                                                      if (
+                                                        !$event.type.indexOf(
+                                                          "key"
+                                                        ) &&
+                                                        _vm._k(
+                                                          $event.keyCode,
+                                                          "enter",
+                                                          13,
+                                                          $event.key,
+                                                          "Enter"
+                                                        )
+                                                      ) {
+                                                        return null
+                                                      }
+                                                      return _vm.UpdateTaskName(
+                                                        task
+                                                      )
+                                                    },
+                                                    function($event) {
+                                                      if (
+                                                        !$event.type.indexOf(
+                                                          "key"
+                                                        ) &&
+                                                        _vm._k(
+                                                          $event.keyCode,
+                                                          "esc",
+                                                          27,
+                                                          $event.key,
+                                                          ["Esc", "Escape"]
+                                                        )
+                                                      ) {
+                                                        return null
+                                                      }
+                                                      _vm.edit_element = null
+                                                    }
+                                                  ],
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.edit_task_title =
+                                                      $event.target.value
+                                                  }
+                                                }
+                                              })
+                                            ])
+                                          : _vm._e()
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "widget-subheading" },
+                                      [
+                                        _vm._v(
+                                          "Добавил: " +
+                                            _vm._s(task.user.name) +
+                                            " - " +
+                                            _vm._s(task.created_at)
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "widget-content-right btn-actions-pane-right"
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "border-0 btn-transition btn btn-outline-success",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.edit_element = task.id
+                                            _vm.edit_task_title = task.title
                                           }
-                                        },
-                                        [_c("i", { staticClass: "fa fa-edit" })]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "border-0 btn-transition btn btn-outline-danger",
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.DeleteTask(task)
-                                            }
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "fa fa-edit" })]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "border-0 btn-transition btn btn-outline-danger",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.DeleteTask(task)
                                           }
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-trash"
-                                          })
-                                        ]
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            ])
-                          ]
-                        )
-                      }),
-                      0
-                    )
-                  ])
-                ]
-              )
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-block text-right card-footer" }),
-        _vm._v(" "),
-        _c("modal-component", { attrs: { task: this.task_data } })
-      ],
-      1
-    )
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "fa fa-trash" })]
+                                    )
+                                  ]
+                                )
+                              ]
+                            )
+                          ])
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ])
+              ]
+            )
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-block text-right card-footer" }),
+      _vm._v(" "),
+      _vm.show_modal == true
+        ? _c(
+            "div",
+            [_c("modal-component", { attrs: { task: this.task_data } })],
+            1
+          )
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = [
