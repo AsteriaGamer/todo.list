@@ -38,15 +38,23 @@
                                                     </div>
                                                 </div>
                                                 <div class="widget-content-left">
-                                                    <div class="widget-heading">{{ task.title }} 
-                                                        <div v-if="task.confirmed == true && task.finished_at != null" class="badge badge-success ml-2">Выполнено</div>
-                                                        <div v-else-if="task.finish_date != null && task.confirmed == false && Date.now() > new Date(task.finish_date).getTime()" class="badge badge-danger ml-2">Просрочен</div>
-                                                        <div v-else-if="task.confirmed == false && Date.now() < new Date(task.created_at).getTime()+(1000*60*60)" class="badge badge-info ml-2">Новая задача</div>
+                                                    <div class="widget-heading">
+                                                        <div v-if="edit_element == null || edit_element != task.id" >
+                                                            <div data-toggle="modal" data-target="#taskUpdateModal" v-on:click="setTaskData(task); show_modal=true">
+                                                                {{ task.title }}
+                                                                <div v-if="task.confirmed == true && task.finished_at != null" class="badge badge-success ml-2">Выполнено</div>
+                                                                <div v-else-if="task.finish_date != null && task.confirmed == false && Date.now() > new Date(task.finish_date).getTime()" class="badge badge-danger ml-2">Просрочен</div>
+                                                                <div v-else-if="task.confirmed == false && Date.now() < new Date(task.created_at).getTime()+(1000*60*60)" class="badge badge-info ml-2">Новая задача</div>
+                                                            </div>
+                                                        </div>
+                                                        <div v-else-if="edit_element == task.id">
+                                                            <input v-model="edit_task_title" v-on:keyup.enter="UpdateTaskName(task)" v-on:keyup.esc="edit_element = null" class="form-control" type="text">
+                                                        </div>
                                                     </div>
                                                     <div class="widget-subheading">Добавил: {{ task.user.name }} - {{ task.created_at}}</div>
                                                 </div>
                                                 <div class="widget-content-right btn-actions-pane-right"> 
-                                                    <button class="border-0 btn-transition btn btn-outline-success" data-toggle="modal" data-target="#taskUpdateModal" v-on:click="setTaskData(task)"> 
+                                                    <button class="border-0 btn-transition btn btn-outline-success" v-on:click="edit_element = task.id; edit_task_title = task.title"> 
                                                         <i class="fa fa-edit"></i>
                                                     </button> 
                                                     <button v-on:click="DeleteTask(task)" class="border-0 btn-transition btn btn-outline-danger"> 
@@ -62,7 +70,10 @@
                     </perfect-scrollbar>
                 </div>
                 <div class="d-block text-right card-footer"></div>
-                <modal-component v-bind:task="this.task_data"></modal-component>
+                <div v-if="show_modal == true">
+                    <modal-component v-bind:task="this.task_data"></modal-component>
+                </div>
+                
     </div>
 </div>
 </template>
@@ -73,8 +84,11 @@
             return{
                 task_list: '',
                 task_title: '',
+                edit_task_title: '',
                 errors: null,
                 task_data: '',
+                edit_element: null,
+                show_modal: false,
             }
         },
 
@@ -141,7 +155,22 @@
 
             setTaskData(task){
                 this.task_data = task
-            }
+            },
+
+            UpdateTaskName(element){
+                this.edit_element = null
+                let data = new FormData();
+                data.append('_method', 'PATCH')
+                data.append('title', this.edit_task_title)
+                axios.post('/api/task/'+element.id, data)
+                .catch((error) => {
+                    this.errors = error.response.data.errors;
+                }).then((response) => {
+                    this.edit_task_title = ''
+                    this.GetTask()
+                })
+            },
+
         },
 
         mounted() {
