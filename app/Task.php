@@ -20,9 +20,18 @@ class Task extends Model
         return $date->format('Y-m-d H:i');
     }
 
+    protected $casts = [
+        'finish_date' => 'datetime:Y-m-d',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function members()
+    {
+        return $this->hasMany(TaskMember::class);
     }
 
 }

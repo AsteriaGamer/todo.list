@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class);
     }
+
+    public function members()
+    {
+        return $this->belongsTo(TaskMember::class);
+    }
 }

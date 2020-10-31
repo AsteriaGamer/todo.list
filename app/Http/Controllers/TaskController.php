@@ -6,6 +6,7 @@ use App\Task;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskStoreRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use Carbon\Carbon;
 
 class TaskController extends Controller
@@ -70,15 +71,20 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task)
     {
         $task->update($request->all());
-        if($request->confirmed == true){
-            $task->update(['finished_at' => Carbon::now()]);
-        }else{
-            $task->update(['finished_at' => NULL]);
+
+        if($request->exists('confirmed')){
+            if($request->confirmed == true){
+                $task->update(['finished_at' => Carbon::now()]);
+            }else{
+                $task->update(['finished_at' => NULL]);
+            }
         }
+
         $task->save();
+
     }
 
     /**
