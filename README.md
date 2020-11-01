@@ -23,13 +23,15 @@
  - установить зависимости используемые фреймворком. Их список уже содержится в файле composer.json. 
  - развернуть субд (необходимые файлы миграции присутствуют).
 
-> cd /var/www 
-> git clone https://github.com/AsteriaGamer/todo.list.git todo-project 
-> cd todo-project 
-> composer install 
-> npm install
-> php artisan migrate
-> npm run watch
+```console
+ cd /var/www 
+ git clone https://github.com/AsteriaGamer/todo.list.git todo-project 
+ cd todo-project 
+ composer install 
+ npm install
+ php artisan migrate
+ npm run watch
+```
 
    ### Изображения:
    ![enter image description here](https://raw.githubusercontent.com/AsteriaGamer/todo.list/master/image-example/example1.png?token=AAIPP5C4AWGKXE27TLTG4W27TXL4E)![enter image description here](https://raw.githubusercontent.com/AsteriaGamer/todo.list/master/image-example/example2.png?token=AAIPP5DRG3O3XQSEI4DHAV27TXMAM)![enter image description here](https://raw.githubusercontent.com/AsteriaGamer/todo.list/master/image-example/example3.png?token=AAIPP5BE42TRSWCTYXUX5OC7TXMBY)![enter image description here](https://raw.githubusercontent.com/AsteriaGamer/todo.list/master/image-example/example4.png?token=AAIPP5BZ6ZZF34TXZ5IINSS7TXMDO)![enter image description here](https://raw.githubusercontent.com/AsteriaGamer/todo.list/master/image-example/example5.png?token=AAIPP5D3EHSPX3XJZSQXG3S7TXMDA)
