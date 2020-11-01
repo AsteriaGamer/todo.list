@@ -20,9 +20,6 @@
                     <div class="card-header-title font-size-lg font-weight-normal"><i class="fa fa-tasks"></i>&nbsp;Список задач</div>
                 </div>
                 <div class="scroll-area-sm">
-                    <perfect-scrollbar class="ps-show-limits">
-                        <div style="position: static;" class="ps ps--active-y">
-                            <div class="ps-content">
                                 <ul class=" list-group list-group-flush">
                                     <li v-for="task in task_list" :key="task.id" class="list-group-item">
                                         <div class="widget-content p-0">
@@ -65,9 +62,6 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </div>
-                        </div>
-                    </perfect-scrollbar>
                 </div>
                 <div class="d-block text-right card-footer"></div>
                 <div v-if="show_modal == true">

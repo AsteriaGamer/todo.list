@@ -2388,12 +2388,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -38919,312 +38913,235 @@ var render = function() {
     _c("div", { staticClass: "card-hover-shadow-2x mb-3 card" }, [
       _vm._m(1),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "scroll-area-sm" },
-        [
-          _c("perfect-scrollbar", { staticClass: "ps-show-limits" }, [
-            _c(
-              "div",
-              {
-                staticClass: "ps ps--active-y",
-                staticStyle: { position: "static" }
-              },
-              [
-                _c("div", { staticClass: "ps-content" }, [
-                  _c(
-                    "ul",
-                    { staticClass: " list-group list-group-flush" },
-                    _vm._l(_vm.task_list, function(task) {
-                      return _c(
-                        "li",
-                        { key: task.id, staticClass: "list-group-item" },
-                        [
-                          _c("div", { staticClass: "widget-content p-0" }, [
+      _c("div", { staticClass: "scroll-area-sm" }, [
+        _c(
+          "ul",
+          { staticClass: " list-group list-group-flush" },
+          _vm._l(_vm.task_list, function(task) {
+            return _c("li", { key: task.id, staticClass: "list-group-item" }, [
+              _c("div", { staticClass: "widget-content p-0" }, [
+                _c("div", { staticClass: "widget-content-wrapper" }, [
+                  _c("div", { staticClass: "widget-content-left mr-2" }, [
+                    _c(
+                      "div",
+                      { staticClass: "custom-checkbox custom-control" },
+                      [
+                        task.confirmed == true
+                          ? _c("div", [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  checked: "checked",
+                                  id: task.id,
+                                  type: "checkbox"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.CheckTask(task)
+                                  }
+                                }
+                              }),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: task.id }
+                                },
+                                [_vm._v(" ")]
+                              )
+                            ])
+                          : _c("div", [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { id: task.id, type: "checkbox" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.CheckTask(task)
+                                  }
+                                }
+                              }),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: task.id }
+                                },
+                                [_vm._v(" ")]
+                              )
+                            ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "widget-content-left" }, [
+                    _c("div", { staticClass: "widget-heading" }, [
+                      _vm.edit_element == null || _vm.edit_element != task.id
+                        ? _c("div", [
                             _c(
                               "div",
-                              { staticClass: "widget-content-wrapper" },
+                              {
+                                attrs: {
+                                  "data-toggle": "modal",
+                                  "data-target": "#taskUpdateModal"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.setTaskData(task)
+                                    _vm.show_modal = true
+                                  }
+                                }
+                              },
                               [
-                                _c(
-                                  "div",
-                                  { staticClass: "widget-content-left mr-2" },
-                                  [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "custom-checkbox custom-control"
-                                      },
-                                      [
-                                        task.confirmed == true
-                                          ? _c("div", [
-                                              _c("input", {
-                                                staticClass:
-                                                  "custom-control-input",
-                                                attrs: {
-                                                  checked: "checked",
-                                                  id: task.id,
-                                                  type: "checkbox"
-                                                },
-                                                on: {
-                                                  click: function($event) {
-                                                    return _vm.CheckTask(task)
-                                                  }
-                                                }
-                                              }),
-                                              _c(
-                                                "label",
-                                                {
-                                                  staticClass:
-                                                    "custom-control-label",
-                                                  attrs: { for: task.id }
-                                                },
-                                                [_vm._v(" ")]
-                                              )
-                                            ])
-                                          : _c("div", [
-                                              _c("input", {
-                                                staticClass:
-                                                  "custom-control-input",
-                                                attrs: {
-                                                  id: task.id,
-                                                  type: "checkbox"
-                                                },
-                                                on: {
-                                                  click: function($event) {
-                                                    return _vm.CheckTask(task)
-                                                  }
-                                                }
-                                              }),
-                                              _c(
-                                                "label",
-                                                {
-                                                  staticClass:
-                                                    "custom-control-label",
-                                                  attrs: { for: task.id }
-                                                },
-                                                [_vm._v(" ")]
-                                              )
-                                            ])
-                                      ]
-                                    )
-                                  ]
+                                _vm._v(
+                                  "\n                                                                " +
+                                    _vm._s(task.title) +
+                                    "\n                                                                "
                                 ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "widget-content-left" },
-                                  [
-                                    _c(
+                                task.confirmed == true &&
+                                task.finished_at != null
+                                  ? _c(
                                       "div",
-                                      { staticClass: "widget-heading" },
-                                      [
-                                        _vm.edit_element == null ||
-                                        _vm.edit_element != task.id
-                                          ? _c("div", [
-                                              _c(
-                                                "div",
-                                                {
-                                                  attrs: {
-                                                    "data-toggle": "modal",
-                                                    "data-target":
-                                                      "#taskUpdateModal"
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.setTaskData(task)
-                                                      _vm.show_modal = true
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                                                                " +
-                                                      _vm._s(task.title) +
-                                                      "\n                                                                "
-                                                  ),
-                                                  task.confirmed == true &&
-                                                  task.finished_at != null
-                                                    ? _c(
-                                                        "div",
-                                                        {
-                                                          staticClass:
-                                                            "badge badge-success ml-2"
-                                                        },
-                                                        [_vm._v("Выполнено")]
-                                                      )
-                                                    : task.finish_date !=
-                                                        null &&
-                                                      task.confirmed == false &&
-                                                      Date.now() >
-                                                        new Date(
-                                                          task.finish_date
-                                                        ).getTime()
-                                                    ? _c(
-                                                        "div",
-                                                        {
-                                                          staticClass:
-                                                            "badge badge-danger ml-2"
-                                                        },
-                                                        [_vm._v("Просрочен")]
-                                                      )
-                                                    : task.confirmed == false &&
-                                                      Date.now() <
-                                                        new Date(
-                                                          task.created_at
-                                                        ).getTime() +
-                                                          1000 * 60 * 60
-                                                    ? _c(
-                                                        "div",
-                                                        {
-                                                          staticClass:
-                                                            "badge badge-info ml-2"
-                                                        },
-                                                        [_vm._v("Новая задача")]
-                                                      )
-                                                    : _vm._e()
-                                                ]
-                                              )
-                                            ])
-                                          : _vm.edit_element == task.id
-                                          ? _c("div", [
-                                              _c("input", {
-                                                directives: [
-                                                  {
-                                                    name: "model",
-                                                    rawName: "v-model",
-                                                    value: _vm.edit_task_title,
-                                                    expression:
-                                                      "edit_task_title"
-                                                  }
-                                                ],
-                                                staticClass: "form-control",
-                                                attrs: { type: "text" },
-                                                domProps: {
-                                                  value: _vm.edit_task_title
-                                                },
-                                                on: {
-                                                  keyup: [
-                                                    function($event) {
-                                                      if (
-                                                        !$event.type.indexOf(
-                                                          "key"
-                                                        ) &&
-                                                        _vm._k(
-                                                          $event.keyCode,
-                                                          "enter",
-                                                          13,
-                                                          $event.key,
-                                                          "Enter"
-                                                        )
-                                                      ) {
-                                                        return null
-                                                      }
-                                                      return _vm.UpdateTaskName(
-                                                        task
-                                                      )
-                                                    },
-                                                    function($event) {
-                                                      if (
-                                                        !$event.type.indexOf(
-                                                          "key"
-                                                        ) &&
-                                                        _vm._k(
-                                                          $event.keyCode,
-                                                          "esc",
-                                                          27,
-                                                          $event.key,
-                                                          ["Esc", "Escape"]
-                                                        )
-                                                      ) {
-                                                        return null
-                                                      }
-                                                      _vm.edit_element = null
-                                                    }
-                                                  ],
-                                                  input: function($event) {
-                                                    if (
-                                                      $event.target.composing
-                                                    ) {
-                                                      return
-                                                    }
-                                                    _vm.edit_task_title =
-                                                      $event.target.value
-                                                  }
-                                                }
-                                              })
-                                            ])
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
+                                      {
+                                        staticClass: "badge badge-success ml-2"
+                                      },
+                                      [_vm._v("Выполнено")]
+                                    )
+                                  : task.finish_date != null &&
+                                    task.confirmed == false &&
+                                    Date.now() >
+                                      new Date(task.finish_date).getTime()
+                                  ? _c(
                                       "div",
-                                      { staticClass: "widget-subheading" },
-                                      [
-                                        _vm._v(
-                                          "Добавил: " +
-                                            _vm._s(task.user.name) +
-                                            " - " +
-                                            _vm._s(task.created_at)
-                                        )
-                                      ]
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "widget-content-right btn-actions-pane-right"
-                                  },
-                                  [
-                                    _c(
-                                      "button",
                                       {
-                                        staticClass:
-                                          "border-0 btn-transition btn btn-outline-success",
-                                        on: {
-                                          click: function($event) {
-                                            _vm.edit_element = task.id
-                                            _vm.edit_task_title = task.title
-                                          }
-                                        }
+                                        staticClass: "badge badge-danger ml-2"
                                       },
-                                      [_c("i", { staticClass: "fa fa-edit" })]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "border-0 btn-transition btn btn-outline-danger",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.DeleteTask(task)
-                                          }
-                                        }
-                                      },
-                                      [_c("i", { staticClass: "fa fa-trash" })]
+                                      [_vm._v("Просрочен")]
                                     )
-                                  ]
-                                )
+                                  : task.confirmed == false &&
+                                    Date.now() <
+                                      new Date(task.created_at).getTime() +
+                                        1000 * 60 * 60
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "badge badge-info ml-2" },
+                                      [_vm._v("Новая задача")]
+                                    )
+                                  : _vm._e()
                               ]
                             )
                           ])
-                        ]
+                        : _vm.edit_element == task.id
+                        ? _c("div", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.edit_task_title,
+                                  expression: "edit_task_title"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.edit_task_title },
+                              on: {
+                                keyup: [
+                                  function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.UpdateTaskName(task)
+                                  },
+                                  function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "esc",
+                                        27,
+                                        $event.key,
+                                        ["Esc", "Escape"]
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    _vm.edit_element = null
+                                  }
+                                ],
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.edit_task_title = $event.target.value
+                                }
+                              }
+                            })
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "widget-subheading" }, [
+                      _vm._v(
+                        "Добавил: " +
+                          _vm._s(task.user.name) +
+                          " - " +
+                          _vm._s(task.created_at)
                       )
-                    }),
-                    0
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "widget-content-right btn-actions-pane-right"
+                    },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "border-0 btn-transition btn btn-outline-success",
+                          on: {
+                            click: function($event) {
+                              _vm.edit_element = task.id
+                              _vm.edit_task_title = task.title
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-edit" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "border-0 btn-transition btn btn-outline-danger",
+                          on: {
+                            click: function($event) {
+                              return _vm.DeleteTask(task)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-trash" })]
+                      )
+                    ]
                   )
                 ])
-              ]
-            )
-          ])
-        ],
-        1
-      ),
+              ])
+            ])
+          }),
+          0
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "d-block text-right card-footer" }),
       _vm._v(" "),
