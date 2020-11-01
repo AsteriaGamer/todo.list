@@ -28,3 +28,4 @@ Route::resource('sub-task', 'SubTaskController')->except([
 
 Route::get('/sub-task-get/{id}', 'SubTaskController@index');
 Route::get('/task-member-get/{id}', 'TaskMemberController@index');
+Route::get('/user-search/{name}', 'UserSearchController@index');

@@ -85,13 +85,19 @@
                       <div class="input-group input-group-sm mb-3">
                         <input
                           type="text"
+                          id="user-input"
+                          list="user-name-list"
                           v-model="task_member"
                           class="form-control"
                           placeholder="Введите имя пользователя"
                           aria-label="Recipient's username"
                           aria-describedby="basic-addon2"
                           @keydown="ClearErr()"
+                          @keydown.delete="task_members_list = []"
                         />
+                        <datalist id="user-name-list" v-if="task_members_list.length > 0">
+                          <option v-for="result in task_members_list" :key="result.id" :value="result.name"></option>
+                        </datalist>
                         <div class="input-group-append">
                           <button
                             v-on:click="AddMember(task.id)"
@@ -216,6 +222,7 @@ export default {
       member_list: "",
       sub_task_list: "",
       completed_sub_task: 0,
+      task_members_list: [],
       new_sub: {
         title: null,
         start_time: null,
@@ -235,10 +242,20 @@ export default {
     task: function (){
       this.GetSubTask(this.task.id)
       this.GetMembers(this.task.id)
+    },
+    task_member(after, before) {
+        this.GetUsername();
     }
   },
 
   methods: {
+
+    GetUsername() {
+            axios.get('/api/user-search/'+this.task_member)
+                .then(response => this.task_members_list = response.data)
+                .catch(error => {});
+    },
+
     AddMember(element) {
       let data = new FormData();
       data.append("task_id", element);

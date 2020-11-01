@@ -2117,6 +2117,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["task"],
   data: function data() {
@@ -2125,6 +2131,7 @@ __webpack_require__.r(__webpack_exports__);
       member_list: "",
       sub_task_list: "",
       completed_sub_task: 0,
+      task_members_list: [],
       new_sub: {
         title: null,
         start_time: null,
@@ -2143,45 +2150,55 @@ __webpack_require__.r(__webpack_exports__);
     task: function task() {
       this.GetSubTask(this.task.id);
       this.GetMembers(this.task.id);
+    },
+    task_member: function task_member(after, before) {
+      this.GetUsername();
     }
   },
   methods: {
-    AddMember: function AddMember(element) {
+    GetUsername: function GetUsername() {
       var _this = this;
+
+      axios.get('/api/user-search/' + this.task_member).then(function (response) {
+        return _this.task_members_list = response.data;
+      })["catch"](function (error) {});
+    },
+    AddMember: function AddMember(element) {
+      var _this2 = this;
 
       var data = new FormData();
       data.append("task_id", element);
       data.append("user_name", this.task_member);
       axios.post("/api/task-member", data).then(function (response) {
-        _this.task_member = null;
+        _this2.task_member = null;
 
-        _this.GetMembers(_this.task.id);
-      })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
-      });
-    },
-    GetMembers: function GetMembers(element) {
-      var _this2 = this;
-
-      axios.get("/api/task-member-get/" + element).then(function (responce) {
-        _this2.member_list = responce.data;
+        _this2.GetMembers(_this2.task.id);
       })["catch"](function (error) {
         _this2.errors = error.response.data.errors;
       });
     },
-    DeleteMember: function DeleteMember(element) {
+    GetMembers: function GetMembers(element) {
       var _this3 = this;
 
-      var data = new FormData();
-      data.append("_method", "DELETE");
-      axios.post("/api/task-member/" + element.id, data).then(function (response) {
-        _this3.GetMembers(_this3.task.id);
+      axios.get("/api/task-member-get/" + element).then(function (responce) {
+        _this3.member_list = responce.data;
       })["catch"](function (error) {
         _this3.errors = error.response.data.errors;
       });
     },
-    CreateSubTask: function CreateSubTask(element) {
+    DeleteMember: function DeleteMember(element) {
       var _this4 = this;
+
+      var data = new FormData();
+      data.append("_method", "DELETE");
+      axios.post("/api/task-member/" + element.id, data).then(function (response) {
+        _this4.GetMembers(_this4.task.id);
+      })["catch"](function (error) {
+        _this4.errors = error.response.data.errors;
+      });
+    },
+    CreateSubTask: function CreateSubTask(element) {
+      var _this5 = this;
 
       var data = new FormData();
       data.append('task_id', element);
@@ -2190,41 +2207,41 @@ __webpack_require__.r(__webpack_exports__);
       data.append("end_time", this.new_sub.end_time);
       data.append("confirmed", 0);
       axios.post("/api/sub-task", data).then(function (response) {
-        _this4.ClearNewSub();
+        _this5.ClearNewSub();
 
-        _this4.GetSubTask(_this4.task.id);
-
-        _this4.CompletedSubTask();
-      })["catch"](function (error) {
-        _this4.errors = error.response.data.errors;
-      });
-    },
-    GetSubTask: function GetSubTask(element) {
-      var _this5 = this;
-
-      axios.get("/api/sub-task-get/" + element).then(function (responce) {
-        _this5.sub_task_list = responce.data;
+        _this5.GetSubTask(_this5.task.id);
 
         _this5.CompletedSubTask();
       })["catch"](function (error) {
         _this5.errors = error.response.data.errors;
       });
     },
-    DeleteSubTask: function DeleteSubTask(element) {
+    GetSubTask: function GetSubTask(element) {
       var _this6 = this;
 
-      var data = new FormData();
-      data.append("_method", "DELETE");
-      axios.post("/api/sub-task/" + element.id, data).then(function (response) {
-        _this6.GetSubTask(_this6.task.id);
+      axios.get("/api/sub-task-get/" + element).then(function (responce) {
+        _this6.sub_task_list = responce.data;
 
         _this6.CompletedSubTask();
       })["catch"](function (error) {
         _this6.errors = error.response.data.errors;
       });
     },
-    CheckSubTask: function CheckSubTask(element) {
+    DeleteSubTask: function DeleteSubTask(element) {
       var _this7 = this;
+
+      var data = new FormData();
+      data.append("_method", "DELETE");
+      axios.post("/api/sub-task/" + element.id, data).then(function (response) {
+        _this7.GetSubTask(_this7.task.id);
+
+        _this7.CompletedSubTask();
+      })["catch"](function (error) {
+        _this7.errors = error.response.data.errors;
+      });
+    },
+    CheckSubTask: function CheckSubTask(element) {
+      var _this8 = this;
 
       element.confirmed = !element.confirmed;
       var data = new FormData();
@@ -2239,15 +2256,15 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.post("/api/sub-task/" + element.id, data)["catch"](function (error) {
-        _this7.errors = error.response.data.errors;
+        _this8.errors = error.response.data.errors;
       }).then(function (response) {
-        _this7.GetSubTask(_this7.task.id);
+        _this8.GetSubTask(_this8.task.id);
 
-        _this7.CompletedSubTask();
+        _this8.CompletedSubTask();
       });
     },
     UpdateSubTask: function UpdateSubTask(sub_task) {
-      var _this8 = this;
+      var _this9 = this;
 
       var data = new FormData();
       data.append("_method", "PATCH");
@@ -2255,23 +2272,23 @@ __webpack_require__.r(__webpack_exports__);
       data.append("start_time", this.edit.start_time);
       data.append("end_time", this.edit.end_time);
       axios.post("/api/sub-task/" + sub_task.id, data)["catch"](function (error) {
-        _this8.errors = error.response.data.errors;
+        _this9.errors = error.response.data.errors;
       }).then(function (response) {
-        _this8.GetSubTask(_this8.task.id);
+        _this9.GetSubTask(_this9.task.id);
 
-        _this8.ClearEdit();
+        _this9.ClearEdit();
 
-        _this8.CompletedSubTask();
+        _this9.CompletedSubTask();
       });
     },
     UpdateFinishDate: function UpdateFinishDate(element) {
-      var _this9 = this;
+      var _this10 = this;
 
       var data = new FormData();
       data.append("_method", "PATCH");
       data.append("finish_date", element.finish_date);
       axios.post("/api/task/" + element.id, data)["catch"](function (error) {
-        _this9.errors = error.response.data.errors;
+        _this10.errors = error.response.data.errors;
       }).then(function (response) {
         console.log("ok");
       });
@@ -38243,15 +38260,34 @@ var render = function() {
                                       staticClass: "form-control",
                                       attrs: {
                                         type: "text",
+                                        id: "user-input",
+                                        list: "user-name-list",
                                         placeholder: "Введите имя пользователя",
                                         "aria-label": "Recipient's username",
                                         "aria-describedby": "basic-addon2"
                                       },
                                       domProps: { value: _vm.task_member },
                                       on: {
-                                        keydown: function($event) {
-                                          return _vm.ClearErr()
-                                        },
+                                        keydown: [
+                                          function($event) {
+                                            return _vm.ClearErr()
+                                          },
+                                          function($event) {
+                                            if (
+                                              !$event.type.indexOf("key") &&
+                                              _vm._k(
+                                                $event.keyCode,
+                                                "delete",
+                                                [8, 46],
+                                                $event.key,
+                                                ["Backspace", "Delete", "Del"]
+                                              )
+                                            ) {
+                                              return null
+                                            }
+                                            _vm.task_members_list = []
+                                          }
+                                        ],
                                         input: function($event) {
                                           if ($event.target.composing) {
                                             return
@@ -38260,6 +38296,23 @@ var render = function() {
                                         }
                                       }
                                     }),
+                                    _vm._v(" "),
+                                    _vm.task_members_list.length > 0
+                                      ? _c(
+                                          "datalist",
+                                          { attrs: { id: "user-name-list" } },
+                                          _vm._l(
+                                            _vm.task_members_list,
+                                            function(result) {
+                                              return _c("option", {
+                                                key: result.id,
+                                                domProps: { value: result.name }
+                                              })
+                                            }
+                                          ),
+                                          0
+                                        )
+                                      : _vm._e(),
                                     _vm._v(" "),
                                     _c(
                                       "div",
