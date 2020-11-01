@@ -2123,14 +2123,17 @@ __webpack_require__.r(__webpack_exports__);
       task_member: "",
       member_list: "",
       sub_task_list: "",
-      sub_task_title: "",
-      sub_task_start_time: "",
-      sub_task_end_time: "",
-      main_task_id: this.task,
-      edit_sub_task_title: null,
-      edit_sub_task_start_time: null,
-      edit_sub_task_end_time: null,
-      edit_element: null,
+      new_sub: {
+        title: null,
+        start_time: null,
+        end_time: null
+      },
+      edit: {
+        element: null,
+        title: null,
+        start_time: null,
+        end_time: null
+      },
       errors: ""
     };
   },
@@ -2180,14 +2183,12 @@ __webpack_require__.r(__webpack_exports__);
 
       var data = new FormData();
       data.append('task_id', element);
-      data.append("title", this.sub_task_title);
-      data.append("start_time", this.sub_task_start_time);
-      data.append("end_time", this.sub_task_end_time);
+      data.append("title", this.new_sub.title);
+      data.append("start_time", this.new_sub.start_time);
+      data.append("end_time", this.new_sub.end_time);
       data.append("confirmed", 0);
       axios.post("/api/sub-task", data).then(function (response) {
-        _this4.sub_task_title = null;
-        _this4.sub_task_start_time = null;
-        _this4.sub_task_end_time = null;
+        _this4.ClearNewSub();
 
         _this4.GetSubTask(_this4.task.id);
       })["catch"](function (error) {
@@ -2235,26 +2236,20 @@ __webpack_require__.r(__webpack_exports__);
         _this7.GetSubTask(_this7.task.id);
       });
     },
-    ClearErr: function ClearErr() {
-      this.errors = "";
-    },
-    UpdateSubTask: function UpdateSubTask(element) {
+    UpdateSubTask: function UpdateSubTask(sub_task) {
       var _this8 = this;
 
-      this.edit_element = null;
       var data = new FormData();
       data.append("_method", "PATCH");
-      data.append("title", this.edit_sub_task_title);
-      data.append("start_time", this.edit_sub_task_start_time);
-      data.append("end_time", this.edit_sub_task_end_time);
-      axios.post("/api/sub-task/" + element.id, data)["catch"](function (error) {
+      data.append("title", this.edit.title);
+      data.append("start_time", this.edit.start_time);
+      data.append("end_time", this.edit.end_time);
+      axios.post("/api/sub-task/" + sub_task.id, data)["catch"](function (error) {
         _this8.errors = error.response.data.errors;
       }).then(function (response) {
-        _this8.edit_sub_task_title = "";
-        _this8.edit_sub_task_start_time = "";
-        _this8.edit_sub_task_end_time = "";
-
         _this8.GetSubTask(_this8.task.id);
+
+        _this8.ClearEdit();
       });
     },
     UpdateFinishDate: function UpdateFinishDate(element) {
@@ -2268,6 +2263,19 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log("ok");
       });
+    },
+    ClearErr: function ClearErr() {
+      this.errors = "";
+    },
+    ClearEdit: function ClearEdit() {
+      for (var el in this.edit) {
+        Vue.set(this.edit, el, null);
+      }
+    },
+    ClearNewSub: function ClearNewSub() {
+      for (var el in this.new_sub) {
+        Vue.set(this.new_sub, el, null);
+      }
     }
   },
   mounted: function mounted() {
@@ -38348,8 +38356,8 @@ var render = function() {
                         { staticClass: "flex-row w-100 align-items-start" },
                         _vm._l(_vm.sub_task_list, function(sub_task) {
                           return _c("div", { key: sub_task.id }, [
-                            _vm.edit_element == null ||
-                            _vm.edit_element != sub_task.id
+                            _vm.edit.element == null ||
+                            _vm.edit.element != sub_task.id
                               ? _c("div", [
                                   _c(
                                     "div",
@@ -38445,12 +38453,11 @@ var render = function() {
                                             "btn btn-sm btn-outline-success btn-transition border-0 align-self-start",
                                           on: {
                                             click: function($event) {
-                                              _vm.edit_element = sub_task.id
-                                              _vm.edit_sub_task_title =
-                                                sub_task.title
-                                              _vm.edit_sub_task_start_time =
+                                              _vm.edit.element = sub_task.id
+                                              _vm.edit.title = sub_task.title
+                                              _vm.edit.start_time =
                                                 sub_task.start_time
-                                              _vm.edit_sub_task_end_time =
+                                              _vm.edit.end_time =
                                                 sub_task.end_time
                                             }
                                           }
@@ -38478,7 +38485,7 @@ var render = function() {
                                     ]
                                   )
                                 ])
-                              : _vm.edit_element == sub_task.id
+                              : _vm.edit.element == sub_task.id
                               ? _c("div", [
                                   _c(
                                     "div",
@@ -38492,23 +38499,24 @@ var render = function() {
                                           {
                                             name: "model",
                                             rawName: "v-model",
-                                            value: _vm.edit_sub_task_title,
-                                            expression: "edit_sub_task_title"
+                                            value: _vm.edit.title,
+                                            expression: "edit.title"
                                           }
                                         ],
                                         staticClass:
                                           "form-control form-control-sm w-50",
                                         attrs: { type: "text" },
-                                        domProps: {
-                                          value: _vm.edit_sub_task_title
-                                        },
+                                        domProps: { value: _vm.edit.title },
                                         on: {
                                           input: function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.edit_sub_task_title =
+                                            _vm.$set(
+                                              _vm.edit,
+                                              "title",
                                               $event.target.value
+                                            )
                                           }
                                         }
                                       }),
@@ -38518,24 +38526,26 @@ var render = function() {
                                           {
                                             name: "model",
                                             rawName: "v-model",
-                                            value: _vm.edit_sub_task_start_time,
-                                            expression:
-                                              "edit_sub_task_start_time"
+                                            value: _vm.edit.start_time,
+                                            expression: "edit.start_time"
                                           }
                                         ],
                                         staticClass:
                                           "form-control form-control-sm w-25",
                                         attrs: { type: "text" },
                                         domProps: {
-                                          value: _vm.edit_sub_task_start_time
+                                          value: _vm.edit.start_time
                                         },
                                         on: {
                                           input: function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.edit_sub_task_start_time =
+                                            _vm.$set(
+                                              _vm.edit,
+                                              "start_time",
                                               $event.target.value
+                                            )
                                           }
                                         }
                                       }),
@@ -38545,23 +38555,24 @@ var render = function() {
                                           {
                                             name: "model",
                                             rawName: "v-model",
-                                            value: _vm.edit_sub_task_end_time,
-                                            expression: "edit_sub_task_end_time"
+                                            value: _vm.edit.end_time,
+                                            expression: "edit.end_time"
                                           }
                                         ],
                                         staticClass:
                                           "form-control form-control-sm w-25",
                                         attrs: { type: "text" },
-                                        domProps: {
-                                          value: _vm.edit_sub_task_end_time
-                                        },
+                                        domProps: { value: _vm.edit.end_time },
                                         on: {
                                           input: function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.edit_sub_task_end_time =
+                                            _vm.$set(
+                                              _vm.edit,
+                                              "end_time",
                                               $event.target.value
+                                            )
                                           }
                                         }
                                       }),
@@ -38618,14 +38629,14 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.sub_task_title,
-                                expression: "sub_task_title"
+                                value: _vm.new_sub.title,
+                                expression: "new_sub.title"
                               }
                             ],
                             staticClass:
                               "form-control form-control-sm w-50 mb-1",
                             attrs: { placeholder: "Имя задания" },
-                            domProps: { value: _vm.sub_task_title },
+                            domProps: { value: _vm.new_sub.title },
                             on: {
                               keydown: function($event) {
                                 return _vm.ClearErr()
@@ -38634,7 +38645,11 @@ var render = function() {
                                 if ($event.target.composing) {
                                   return
                                 }
-                                _vm.sub_task_title = $event.target.value
+                                _vm.$set(
+                                  _vm.new_sub,
+                                  "title",
+                                  $event.target.value
+                                )
                               }
                             }
                           }),
@@ -38644,14 +38659,14 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.sub_task_start_time,
-                                expression: "sub_task_start_time"
+                                value: _vm.new_sub.start_time,
+                                expression: "new_sub.start_time"
                               }
                             ],
                             staticClass:
                               "form-control form-control-sm w-25 mb-1",
                             attrs: { placeholder: "Начало" },
-                            domProps: { value: _vm.sub_task_start_time },
+                            domProps: { value: _vm.new_sub.start_time },
                             on: {
                               keydown: function($event) {
                                 return _vm.ClearErr()
@@ -38660,7 +38675,11 @@ var render = function() {
                                 if ($event.target.composing) {
                                   return
                                 }
-                                _vm.sub_task_start_time = $event.target.value
+                                _vm.$set(
+                                  _vm.new_sub,
+                                  "start_time",
+                                  $event.target.value
+                                )
                               }
                             }
                           }),
@@ -38670,14 +38689,14 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.sub_task_end_time,
-                                expression: "sub_task_end_time"
+                                value: _vm.new_sub.end_time,
+                                expression: "new_sub.end_time"
                               }
                             ],
                             staticClass:
                               "form-control form-control-sm w-25 mb-1",
                             attrs: { placeholder: "Конец" },
-                            domProps: { value: _vm.sub_task_end_time },
+                            domProps: { value: _vm.new_sub.end_time },
                             on: {
                               keydown: function($event) {
                                 return _vm.ClearErr()
@@ -38686,7 +38705,11 @@ var render = function() {
                                 if ($event.target.composing) {
                                   return
                                 }
-                                _vm.sub_task_end_time = $event.target.value
+                                _vm.$set(
+                                  _vm.new_sub,
+                                  "end_time",
+                                  $event.target.value
+                                )
                               }
                             }
                           }),

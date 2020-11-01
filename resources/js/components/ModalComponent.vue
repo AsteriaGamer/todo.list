@@ -132,7 +132,7 @@
                 <div class="flex-row w-100 align-items-start">
             
                   <div v-for="sub_task in sub_task_list" :key="sub_task.id">
-                    <div v-if="edit_element == null || edit_element != sub_task.id" >
+                    <div v-if="edit.element == null || edit.element != sub_task.id" >
                       <div class="d-flex flex-row justify-content-between py-1">
                           <div class="custom-checkbox custom-control">
                             <div v-if="sub_task.confirmed == true">
@@ -145,7 +145,7 @@
                           <label class="w-50">{{sub_task.title}}</label>
                           <p>{{sub_task.start_time}}</p>
                           <p>{{sub_task.end_time}}</p>
-                          <button class="btn btn-sm btn-outline-success btn-transition border-0 align-self-start" v-on:click="edit_element = sub_task.id; edit_sub_task_title = sub_task.title; edit_sub_task_start_time = sub_task.start_time; edit_sub_task_end_time = sub_task.end_time;"> 
+                          <button class="btn btn-sm btn-outline-success btn-transition border-0 align-self-start" v-on:click="edit.element = sub_task.id; edit.title = sub_task.title; edit.start_time = sub_task.start_time; edit.end_time = sub_task.end_time;"> 
                             <i class="fa fa-edit"></i>
                           </button> 
                           <button
@@ -156,11 +156,11 @@
                           </button>
                         </div>
                       </div>
-                      <div v-else-if="edit_element == sub_task.id">
+                      <div v-else-if="edit.element == sub_task.id">
                         <div class="d-flex flex-row justify-content-between py-1">
-                          <input v-model="edit_sub_task_title" class="form-control form-control-sm w-50" type="text">
-                          <input v-model="edit_sub_task_start_time" class="form-control form-control-sm w-25" type="text">
-                          <input v-model="edit_sub_task_end_time" class="form-control form-control-sm w-25" type="text">
+                          <input v-model="edit.title" class="form-control form-control-sm w-50" type="text">
+                          <input v-model="edit.start_time" class="form-control form-control-sm w-25" type="text">
+                          <input v-model="edit.end_time" class="form-control form-control-sm w-25" type="text">
                           <button class="btn btn-sm btn-warning align-self-center" v-on:click="UpdateSubTask(sub_task)"> 
                             <i class="fa fa-edit"></i>
                           </button> 
@@ -180,9 +180,9 @@
                   <div
                     class="d-flex flex-row justify-content-between py-1"
                   >
-                    <input v-model="sub_task_title" class="form-control form-control-sm w-50 mb-1" placeholder="Имя задания" @keydown="ClearErr()">
-                    <input v-model="sub_task_start_time" class="form-control form-control-sm w-25 mb-1" placeholder="Начало" @keydown="ClearErr()">
-                    <input v-model="sub_task_end_time" class="form-control form-control-sm w-25 mb-1" placeholder="Конец" @keydown="ClearErr()">
+                    <input v-model="new_sub.title" class="form-control form-control-sm w-50 mb-1" placeholder="Имя задания" @keydown="ClearErr()">
+                    <input v-model="new_sub.start_time" class="form-control form-control-sm w-25 mb-1" placeholder="Начало" @keydown="ClearErr()">
+                    <input v-model="new_sub.end_time" class="form-control form-control-sm w-25 mb-1" placeholder="Конец" @keydown="ClearErr()">
                     <button
                       v-on:click="CreateSubTask(task.id)"
                       class="btn btn-sm btn-outline-success btn-transition border-0 align-self-start"
@@ -214,14 +214,17 @@ export default {
       task_member: "",
       member_list: "",
       sub_task_list: "",
-      sub_task_title: "",
-      sub_task_start_time: "",
-      sub_task_end_time: "",
-      main_task_id: this.task,
-      edit_sub_task_title: null,
-      edit_sub_task_start_time: null,
-      edit_sub_task_end_time: null,
-      edit_element: null,
+      new_sub: {
+        title: null,
+        start_time: null,
+        end_time: null,
+      },
+      edit: {
+        element: null,
+        title: null,
+        start_time: null,
+        end_time: null,
+      },
       errors: "",
     };
   },
@@ -276,16 +279,14 @@ export default {
     CreateSubTask(element) {
       let data = new FormData();
       data.append('task_id', element)
-      data.append("title", this.sub_task_title);
-      data.append("start_time", this.sub_task_start_time);
-      data.append("end_time", this.sub_task_end_time);
+      data.append("title", this.new_sub.title);
+      data.append("start_time", this.new_sub.start_time);
+      data.append("end_time", this.new_sub.end_time);
       data.append("confirmed", 0);
       axios
         .post("/api/sub-task", data)
         .then((response) => {
-          this.sub_task_title = null;
-          this.sub_task_start_time = null;
-          this.sub_task_end_time = null;
+          this.ClearNewSub();
           this.GetSubTask(this.task.id);
         })
         .catch((error) => {
@@ -337,27 +338,20 @@ export default {
         });
     },
 
-    ClearErr() {
-      this.errors = "";
-    },
-
-    UpdateSubTask(element) {
-      this.edit_element = null;
+    UpdateSubTask(sub_task) {
       let data = new FormData();
       data.append("_method", "PATCH");
-      data.append("title", this.edit_sub_task_title);
-      data.append("start_time", this.edit_sub_task_start_time);
-      data.append("end_time", this.edit_sub_task_end_time);
+      data.append("title", this.edit.title);
+      data.append("start_time", this.edit.start_time);
+      data.append("end_time", this.edit.end_time);
       axios
-        .post("/api/sub-task/" + element.id, data)
+        .post("/api/sub-task/" + sub_task.id, data)
         .catch((error) => {
           this.errors = error.response.data.errors;
         })
         .then((response) => {
-          this.edit_sub_task_title = "";
-          this.edit_sub_task_start_time = "";
-          this.edit_sub_task_end_time = "";
           this.GetSubTask(this.task.id);
+          this.ClearEdit();
         });
     },
 
@@ -374,6 +368,22 @@ export default {
           console.log("ok");
         });
     },
+
+    ClearErr() {
+      this.errors = "";
+    },
+
+    ClearEdit(){
+      for (var el in this.edit) {
+        Vue.set(this.edit, el, null)
+      }
+    },
+
+    ClearNewSub(){
+      for(var el in this.new_sub){
+        Vue.set(this.new_sub, el, null)
+      }
+    }
 
   },
 
