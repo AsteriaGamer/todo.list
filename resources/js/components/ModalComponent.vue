@@ -128,6 +128,7 @@
               <div class="list-group-item flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                   <label class="mb-1">Список дополнительных заданий</label>
+                  <small>Выполнено заданий {{completed_sub_task}}/{{sub_task_list.length}}</small>
                 </div>
                 <div class="flex-row w-100 align-items-start">
             
@@ -214,6 +215,7 @@ export default {
       task_member: "",
       member_list: "",
       sub_task_list: "",
+      completed_sub_task: 0,
       new_sub: {
         title: null,
         start_time: null,
@@ -288,6 +290,7 @@ export default {
         .then((response) => {
           this.ClearNewSub();
           this.GetSubTask(this.task.id);
+          this.CompletedSubTask();
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
@@ -299,6 +302,7 @@ export default {
         .get("/api/sub-task-get/"+element)
         .then((responce) => {
           this.sub_task_list = responce.data;
+          this.CompletedSubTask();
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
@@ -312,6 +316,7 @@ export default {
         .post("/api/sub-task/" + element.id, data)
         .then((response) => {
           this.GetSubTask(this.task.id);
+          this.CompletedSubTask();
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
@@ -335,6 +340,7 @@ export default {
         })
         .then((response) => {
           this.GetSubTask(this.task.id);
+          this.CompletedSubTask();
         });
     },
 
@@ -352,6 +358,7 @@ export default {
         .then((response) => {
           this.GetSubTask(this.task.id);
           this.ClearEdit();
+          this.CompletedSubTask();
         });
     },
 
@@ -382,6 +389,14 @@ export default {
     ClearNewSub(){
       for(var el in this.new_sub){
         Vue.set(this.new_sub, el, null)
+      }
+    },
+
+    CompletedSubTask(){
+      this.completed_sub_task = 0;
+      for( let i = 0; i < this.sub_task_list.length; i++){
+        if(this.sub_task_list[i].confirmed === 1)
+          this.completed_sub_task++;
       }
     }
 

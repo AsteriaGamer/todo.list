@@ -2116,6 +2116,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["task"],
   data: function data() {
@@ -2123,6 +2124,7 @@ __webpack_require__.r(__webpack_exports__);
       task_member: "",
       member_list: "",
       sub_task_list: "",
+      completed_sub_task: 0,
       new_sub: {
         title: null,
         start_time: null,
@@ -2191,6 +2193,8 @@ __webpack_require__.r(__webpack_exports__);
         _this4.ClearNewSub();
 
         _this4.GetSubTask(_this4.task.id);
+
+        _this4.CompletedSubTask();
       })["catch"](function (error) {
         _this4.errors = error.response.data.errors;
       });
@@ -2200,6 +2204,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/api/sub-task-get/" + element).then(function (responce) {
         _this5.sub_task_list = responce.data;
+
+        _this5.CompletedSubTask();
       })["catch"](function (error) {
         _this5.errors = error.response.data.errors;
       });
@@ -2211,6 +2217,8 @@ __webpack_require__.r(__webpack_exports__);
       data.append("_method", "DELETE");
       axios.post("/api/sub-task/" + element.id, data).then(function (response) {
         _this6.GetSubTask(_this6.task.id);
+
+        _this6.CompletedSubTask();
       })["catch"](function (error) {
         _this6.errors = error.response.data.errors;
       });
@@ -2234,6 +2242,8 @@ __webpack_require__.r(__webpack_exports__);
         _this7.errors = error.response.data.errors;
       }).then(function (response) {
         _this7.GetSubTask(_this7.task.id);
+
+        _this7.CompletedSubTask();
       });
     },
     UpdateSubTask: function UpdateSubTask(sub_task) {
@@ -2250,6 +2260,8 @@ __webpack_require__.r(__webpack_exports__);
         _this8.GetSubTask(_this8.task.id);
 
         _this8.ClearEdit();
+
+        _this8.CompletedSubTask();
       });
     },
     UpdateFinishDate: function UpdateFinishDate(element) {
@@ -2275,6 +2287,13 @@ __webpack_require__.r(__webpack_exports__);
     ClearNewSub: function ClearNewSub() {
       for (var el in this.new_sub) {
         Vue.set(this.new_sub, el, null);
+      }
+    },
+    CompletedSubTask: function CompletedSubTask() {
+      this.completed_sub_task = 0;
+
+      for (var i = 0; i < this.sub_task_list.length; i++) {
+        if (this.sub_task_list[i].confirmed === 1) this.completed_sub_task++;
       }
     }
   },
@@ -38349,7 +38368,24 @@ var render = function() {
                         "list-group-item flex-column align-items-start"
                     },
                     [
-                      _vm._m(1),
+                      _c(
+                        "div",
+                        { staticClass: "d-flex w-100 justify-content-between" },
+                        [
+                          _c("label", { staticClass: "mb-1" }, [
+                            _vm._v("Список дополнительных заданий")
+                          ]),
+                          _vm._v(" "),
+                          _c("small", [
+                            _vm._v(
+                              "Выполнено заданий " +
+                                _vm._s(_vm.completed_sub_task) +
+                                "/" +
+                                _vm._s(_vm.sub_task_list.length)
+                            )
+                          ])
+                        ]
+                      ),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -38788,16 +38824,6 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
-      _c("label", { staticClass: "mb-1" }, [
-        _vm._v("Список дополнительных заданий")
-      ])
-    ])
   }
 ]
 render._withStripped = true
