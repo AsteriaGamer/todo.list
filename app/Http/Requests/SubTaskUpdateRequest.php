@@ -10,8 +10,8 @@ class SubTaskUpdateRequest extends FormRequest
         return 
             [
             'title' => 'min:5|max:100|string',
-            'start_time' => 'string|regex:/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/',
-            'end_time' => 'string|regex:/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/',
+            'start_time' => 'string|date_format:H:i',
+            'end_time' => 'string|date_format:H:i',
             ];
     }
 
