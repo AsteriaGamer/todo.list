@@ -14,14 +14,4 @@ class TaskUpdateRequest extends FormRequest
             'finish_date' => 'date',
             ];
     }
-
-    public function messages(){
-        return
-            [
-                'title.min' => 'Имя слишком короткое, минимальное число символов: 5',
-                'title.max' => 'Имя слишком длинное, максимальное число символов: 100',
-                'confirmed.boolean' => 'Подтверждение выполнения, несоответствие типов',
-                'finish_date' => 'Дата выполнения задачи не является типом date',
-            ];
-    }
 }

@@ -14,12 +14,4 @@ class TaskMemberStoreRequest extends FormRequest
             ];
     }
 
-    public function messages(){
-        return
-            [
-                'user_name.require' => 'Введите имя пользователя',
-                'user_name.exists' => 'Пользователя с таким именем не существует',
-            ];
-    }
-
 }

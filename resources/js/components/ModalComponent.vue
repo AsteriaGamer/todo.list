@@ -150,34 +150,31 @@
                             </div>
                           </div>
                           <label class="w-50">{{sub_task.title}}</label>
-                          <p>{{sub_task.start_time}}</p>
-                          <p>{{sub_task.end_time}}</p>
-                          <button class="btn btn-sm btn-outline-success btn-transition border-0 align-self-start" v-on:click="edit.element = sub_task.id; edit.title = sub_task.title; edit.start_time = sub_task.start_time; edit.end_time = sub_task.end_time;"> 
-                            <i class="fa fa-edit"></i>
-                          </button> 
-                          <button
-                            v-on:click="DeleteSubTask(sub_task)"
-                            class="btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
-                          >
-                            <i class="fa fa-trash"></i>
-                          </button>
+                          <p class="mr-2">{{sub_task.start_time}}</p>
+                          <p class="mr-2">{{sub_task.end_time}}</p>
+                          <div class="ml-auto">
+                            <button class="btn btn-sm btn-outline-success btn-transition border-0 align-self-start" v-on:click="edit.element = sub_task.id; edit.title = sub_task.title; edit.start_time = sub_task.start_time; edit.end_time = sub_task.end_time;"> 
+                              <i class="fa fa-edit"></i>
+                            </button> 
+                            <button
+                              v-on:click="DeleteSubTask(sub_task)"
+                              class="btn btn-sm btn-outline-danger btn-transition border-0 align-self-start"
+                            >
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </div>
                         </div>
                       </div>
                       <div v-else-if="edit.element == sub_task.id">
                         <div class="d-flex flex-row justify-content-between py-1">
-                          <input v-model="edit.title" class="form-control form-control-sm w-50" type="text">
-                          <input v-model="edit.start_time" class="form-control form-control-sm w-25" type="text">
-                          <input v-model="edit.end_time" class="form-control form-control-sm w-25" type="text">
+                          <input v-model="edit.title" class="form-control form-control-sm w-50 py-1" type="text">
+                          <input v-model="edit.start_time" class="form-control form-control-sm w-25 py-1" type="text">
+                          <input v-model="edit.end_time" class="form-control form-control-sm w-25 py-1" type="text">
+                          <div class="ml-auto">
                           <button class="btn btn-sm btn-warning align-self-center" v-on:click="UpdateSubTask(sub_task)"> 
                             <i class="fa fa-edit"></i>
                           </button> 
-                          <button
-                            v-on:click="DeleteSubTask(sub_task)"
-                            class="btn btn-sm btn-outline-danger btn-transition border-0 align-self-center"
-                          >
-                            <i class="fa fa-trash"></i>
-                          </button>
-
+                          </div>
                         </div>
                       </div>
 
@@ -299,8 +296,10 @@ export default {
       let data = new FormData();
       data.append('task_id', element)
       data.append("title", this.new_sub.title);
-      data.append("start_time", this.new_sub.start_time);
-      data.append("end_time", this.new_sub.end_time);
+      if (this.new_sub.start_time != null)
+        data.append("start_time", this.new_sub.start_time);
+      if (this.new_sub.start_time != null)
+        data.append("end_time", this.new_sub.end_time);
       data.append("confirmed", 0);
       axios
         .post("/api/sub-task", data)

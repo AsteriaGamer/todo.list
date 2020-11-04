@@ -2120,9 +2120,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["task"],
   data: function data() {
@@ -2203,8 +2200,8 @@ __webpack_require__.r(__webpack_exports__);
       var data = new FormData();
       data.append('task_id', element);
       data.append("title", this.new_sub.title);
-      data.append("start_time", this.new_sub.start_time);
-      data.append("end_time", this.new_sub.end_time);
+      if (this.new_sub.start_time != null) data.append("start_time", this.new_sub.start_time);
+      if (this.new_sub.start_time != null) data.append("end_time", this.new_sub.end_time);
       data.append("confirmed", 0);
       axios.post("/api/sub-task", data).then(function (response) {
         _this5.ClearNewSub();
@@ -38521,50 +38518,58 @@ var render = function() {
                                         _vm._v(_vm._s(sub_task.title))
                                       ]),
                                       _vm._v(" "),
-                                      _c("p", [
+                                      _c("p", { staticClass: "mr-2" }, [
                                         _vm._v(_vm._s(sub_task.start_time))
                                       ]),
                                       _vm._v(" "),
-                                      _c("p", [
+                                      _c("p", { staticClass: "mr-2" }, [
                                         _vm._v(_vm._s(sub_task.end_time))
                                       ]),
                                       _vm._v(" "),
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "btn btn-sm btn-outline-success btn-transition border-0 align-self-start",
-                                          on: {
-                                            click: function($event) {
-                                              _vm.edit.element = sub_task.id
-                                              _vm.edit.title = sub_task.title
-                                              _vm.edit.start_time =
-                                                sub_task.start_time
-                                              _vm.edit.end_time =
-                                                sub_task.end_time
+                                      _c("div", { staticClass: "ml-auto" }, [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-sm btn-outline-success btn-transition border-0 align-self-start",
+                                            on: {
+                                              click: function($event) {
+                                                _vm.edit.element = sub_task.id
+                                                _vm.edit.title = sub_task.title
+                                                _vm.edit.start_time =
+                                                  sub_task.start_time
+                                                _vm.edit.end_time =
+                                                  sub_task.end_time
+                                              }
                                             }
-                                          }
-                                        },
-                                        [_c("i", { staticClass: "fa fa-edit" })]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start",
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.DeleteSubTask(sub_task)
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-edit"
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-sm btn-outline-danger btn-transition border-0 align-self-start",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.DeleteSubTask(
+                                                  sub_task
+                                                )
+                                              }
                                             }
-                                          }
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-trash"
-                                          })
-                                        ]
-                                      )
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-trash"
+                                            })
+                                          ]
+                                        )
+                                      ])
                                     ]
                                   )
                                 ])
@@ -38587,7 +38592,7 @@ var render = function() {
                                           }
                                         ],
                                         staticClass:
-                                          "form-control form-control-sm w-50",
+                                          "form-control form-control-sm w-50 py-1",
                                         attrs: { type: "text" },
                                         domProps: { value: _vm.edit.title },
                                         on: {
@@ -38614,7 +38619,7 @@ var render = function() {
                                           }
                                         ],
                                         staticClass:
-                                          "form-control form-control-sm w-25",
+                                          "form-control form-control-sm w-25 py-1",
                                         attrs: { type: "text" },
                                         domProps: {
                                           value: _vm.edit.start_time
@@ -38643,7 +38648,7 @@ var render = function() {
                                           }
                                         ],
                                         staticClass:
-                                          "form-control form-control-sm w-25",
+                                          "form-control form-control-sm w-25 py-1",
                                         attrs: { type: "text" },
                                         domProps: { value: _vm.edit.end_time },
                                         on: {
@@ -38660,37 +38665,27 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(" "),
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "btn btn-sm btn-warning align-self-center",
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.UpdateSubTask(sub_task)
+                                      _c("div", { staticClass: "ml-auto" }, [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-sm btn-warning align-self-center",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.UpdateSubTask(
+                                                  sub_task
+                                                )
+                                              }
                                             }
-                                          }
-                                        },
-                                        [_c("i", { staticClass: "fa fa-edit" })]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "btn btn-sm btn-outline-danger btn-transition border-0 align-self-center",
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.DeleteSubTask(sub_task)
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-trash"
-                                          })
-                                        ]
-                                      )
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-edit"
+                                            })
+                                          ]
+                                        )
+                                      ])
                                     ]
                                   )
                                 ])

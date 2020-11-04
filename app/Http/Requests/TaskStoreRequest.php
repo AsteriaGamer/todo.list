@@ -17,13 +17,4 @@ class TaskStoreRequest extends FormRequest
             'title' => 'required|min:5|max:100|string',
             ];
     }
-
-    public function messages(){
-        return
-            [
-                'title.required' => 'Введите имя для новой задачи',
-                'title.min' => 'Имя слишком короткое',
-                'title.max' => 'Имя слишком длинное',
-            ];
-    }
 }
